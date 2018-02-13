@@ -1,11 +1,21 @@
+// @flow
+
 import React, {Component} from 'react'
-import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import Checkbox from '../../common/forms/Checkbox'
 import styles from './available-project.scss'
 import {isBlank} from '../../common/Utils'
 
-class AvailableProject extends Component {
+type Props = {
+  name: string,
+  stage?: string,
+  isNew: boolean,
+  removed: boolean,
+  selected: boolean,
+  selectProject: () => void
+}
+
+class AvailableProject extends Component<Props> {
   render() {
     const listClasses = classNames(styles.availableProject, {[styles.removedProject]: this.props.removed})
     let info = null
@@ -16,6 +26,7 @@ class AvailableProject extends Component {
       info = <span className={styles.infoRemoved} data-locator='removed'>removed</span>
     }
 
+    // $FlowFixMe
     const displayName = isBlank(this.props.stage) ? this.props.name : `${this.props.name} ${this.props.stage}`
 
     return (
@@ -27,15 +38,6 @@ class AvailableProject extends Component {
       </li>
     )
   }
-}
-
-AvailableProject.propTypes = {
-  name: PropTypes.string.isRequired,
-  stage: PropTypes.string,
-  isNew: PropTypes.bool,
-  removed: PropTypes.bool,
-  selected: PropTypes.bool,
-  selectProject: PropTypes.func.isRequired
 }
 
 export default AvailableProject

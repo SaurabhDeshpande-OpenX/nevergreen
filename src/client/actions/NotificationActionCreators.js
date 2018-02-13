@@ -1,19 +1,22 @@
+// @flow
+
 import {get, send} from '../common/gateways/Gateway'
 import semver from 'semver'
 import _ from 'lodash'
 import {NOTIFICATION, NOTIFICATION_DISMISS} from './Actions'
+import type {Action, ThunkAction} from '../Types'
 
 const NEVERGREEN_IO_REGEX = /nevergreen\.io/i
 
-export function notification(message) {
+export function notification(message: string): Action {
   return {type: NOTIFICATION, message}
 }
 
-export function dismiss() {
+export function dismiss(): Action {
   return {type: NOTIFICATION_DISMISS}
 }
 
-export function checkForNewVersion(currentVersion, hostname) {
+export function checkForNewVersion(currentVersion: string, hostname: string): ThunkAction {
   return function (dispatch) {
     return send(get('https://api.github.com/repos/build-canaries/nevergreen/releases/latest')).then((data) => {
       if (semver.gt(data.tag_name, currentVersion)) {

@@ -1,3 +1,5 @@
+// @flow
+
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {
@@ -11,6 +13,7 @@ import {
   updateTrayId
 } from '../../actions/TrackingActionCreators'
 import TraySettings from './TraySettings'
+import type {Store} from '../../Types'
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
@@ -25,7 +28,7 @@ function mapDispatchToProps(dispatch) {
   }, dispatch)
 }
 
-function mapStateToProps(store, ownProps) {
+function mapStateToProps(store: Store, ownProps) {
   const tray = store.getIn(['trays', ownProps.trayId])
   return {
     trayId: ownProps.trayId,

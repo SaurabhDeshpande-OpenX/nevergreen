@@ -1,4 +1,6 @@
-import Immutable from 'immutable'
+// @flow
+
+import * as Immutable from 'immutable'
 import {
   ENCRYPTING_PASSWORD,
   HIGHLIGHT_TRAY,
@@ -18,10 +20,13 @@ import {
   SET_TRAY_USERNAME,
   TRAY_ADDED
 } from '../actions/Actions'
+import type {Action, Tray} from '../Types'
+
+type State = Immutable.OrderedMap<string, Tray>
 
 const DEFAULT_STATE = Immutable.OrderedMap()
 
-export function reduce(state = DEFAULT_STATE, action) {
+export function reduce(state: State = DEFAULT_STATE, action: Action) {
   switch (action.type) {
     case INITIALISED:
     case IMPORT_SUCCESS: {

@@ -1,12 +1,27 @@
+// @flow
+
 import React, {Component} from 'react'
-import PropTypes from 'prop-types'
 import _ from 'lodash'
 import ScaledGrid from '../common/scale/ScaledGrid'
 import InterestingProject from '../common/project/InterestingProject'
 import styles from './interesting-projects.scss'
 import {isBlank} from '../common/Utils'
+import type {Project, Tray} from '../Types'
 
-class InterestingProjects extends Component {
+type Props = {
+  projects: Project[],
+  trays: Tray[],
+  showBrokenBuildTimers: boolean,
+  showTrayName: boolean,
+  playBrokenBuildSounds: boolean,
+  brokenBuildFx?: string,
+  showBuildLabel?: boolean,
+  errors: string[]
+}
+
+class InterestingProjects extends Component<Props> {
+  sfx: ?HTMLAudioElement
+
   componentWillUnmount() {
     if (this.sfx) {
       this.sfx.pause()
@@ -29,12 +44,12 @@ class InterestingProjects extends Component {
 
     const projects = _.map(this.props.projects, (project) => {
       const tray = this.props.trays.find((tray) => tray.trayId === project.trayId)
-      return <InterestingProject {...project}
-                                 trayName={tray.name}
-                                 key={`${tray.trayId}#${project.projectId}`}
-                                 showBrokenBuildTimers={this.props.showBrokenBuildTimers}
-                                 showTrayName={this.props.showTrayName}
-                                 showBuildLabel={this.props.showBuildLabel}/>
+      return tray && <InterestingProject {...project}
+                                         trayName={tray.name}
+                                         key={`${tray.trayId}#${project.projectId}`}
+                                         showBrokenBuildTimers={this.props.showBrokenBuildTimers}
+                                         showTrayName={this.props.showTrayName}
+                                         showBuildLabel={this.props.showBuildLabel}/>
     })
 
     return (
@@ -44,24 +59,6 @@ class InterestingProjects extends Component {
       </span>
     )
   }
-}
-
-InterestingProjects.propTypes = {
-  projects: PropTypes.arrayOf(PropTypes.shape({
-    projectId: PropTypes.string.isRequired,
-    trayId: PropTypes.string.isRequired,
-    prognosis: PropTypes.oneOf(['sick', 'healthy-building', 'sick-building', 'unknown']).isRequired
-  })),
-  trays: PropTypes.arrayOf(PropTypes.shape({
-    trayId: PropTypes.string.isRequired,
-    name: PropTypes.string
-  })).isRequired,
-  showBrokenBuildTimers: PropTypes.bool,
-  showTrayName: PropTypes.bool,
-  playBrokenBuildSounds: PropTypes.bool,
-  brokenBuildFx: PropTypes.string,
-  showBuildLabel: PropTypes.bool,
-  errors: PropTypes.arrayOf(PropTypes.string)
 }
 
 export default InterestingProjects

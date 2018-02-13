@@ -1,22 +1,25 @@
-import Immutable from 'immutable'
+// @flow
+
+import * as Immutable from 'immutable'
 import LocalRepository from '../common/repo/LocalRepository'
 import {filter} from '../common/repo/Data'
 import {migrate} from '../common/repo/Migrations'
 import {FULL_SCREEN, INITIALISED, INITIALISING, NAVIGATED, REQUEST_FULL_SCREEN} from './Actions'
+import type {Action, ThunkAction} from '../Types'
 
-export function initalising() {
+export function initalising(): Action {
   return {type: INITIALISING}
 }
 
-export function initalised(configuration) {
+export function initalised(configuration: Object): Action {
   return {type: INITIALISED, data: Immutable.fromJS(configuration)}
 }
 
-export function navigated() {
+export function navigated(): Action {
   return {type: NAVIGATED}
 }
 
-export function initalise() {
+export function initalise(): ThunkAction {
   return function (dispatch) {
     dispatch(initalising())
     return LocalRepository.init()
@@ -28,10 +31,10 @@ export function initalise() {
   }
 }
 
-export function enableFullScreen(enabled) {
+export function enableFullScreen(enabled: boolean): Action {
   return {type: FULL_SCREEN, enabled}
 }
 
-export function requestFullScreen(requested) {
+export function requestFullScreen(requested: boolean): Action {
   return {type: REQUEST_FULL_SCREEN, requested}
 }

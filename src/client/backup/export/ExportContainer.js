@@ -1,14 +1,13 @@
+// @flow
+
 import {connect} from 'react-redux'
 import Export from './Export'
 import {filter} from '../../common/repo/Data'
 import {toJson} from '../../common/Json'
 import {toJS} from '../../common/ImmutableToJs'
+import type {Store} from '../../Types'
 
-function mapDispatchToProps() {
-  return {}
-}
-
-function mapStateToProps(store) {
+function mapStateToProps(store: Store): Object {
   return {
     loaded: store.getIn(['backupExport', 'loaded']),
     errors: store.getIn(['backupExport', 'errors']),
@@ -17,4 +16,4 @@ function mapStateToProps(store) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(toJS(Export))
+export default connect(mapStateToProps)(toJS(Export))

@@ -1,13 +1,21 @@
+// @flow
+
 import React, {Component} from 'react'
-import PropTypes from 'prop-types'
 import Container from '../common/container/Container'
 import DropDown from '../common/forms/DropDown'
 import styles from './timing-settings.scss'
 import {friendlyFormatDuration} from '../common/Utils'
+import type {InputEvent} from '../Types'
 
-class TimingSettings extends Component {
-  setRefreshTime = (evt) => {
-    this.props.setRefreshTime(evt.target.value)
+type Props = {
+  refreshTime: number,
+  setRefreshTime: (number) => void,
+  validRefreshTimes: number[]
+}
+
+class TimingSettings extends Component<Props> {
+  setRefreshTime = (evt: InputEvent) => {
+    this.props.setRefreshTime(evt.currentValue.value)
   }
 
   render() {
@@ -21,12 +29,6 @@ class TimingSettings extends Component {
       </Container>
     )
   }
-}
-
-TimingSettings.propTypes = {
-  refreshTime: PropTypes.number.isRequired,
-  setRefreshTime: PropTypes.func.isRequired,
-  validRefreshTimes: PropTypes.arrayOf(PropTypes.number)
 }
 
 export default TimingSettings

@@ -1,16 +1,26 @@
+// @flow
+
 import React, {Component} from 'react'
-import PropTypes from 'prop-types'
 import Input from '../common/forms/Input'
 import styles from './add-message.scss'
+import type {InputEvent} from '../Types'
 
-class AddMessage extends Component {
-  constructor(props) {
+type Props = {
+  addMessage: (string) => void
+}
+
+type State = {
+  message: string
+}
+
+class AddMessage extends Component<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = {message: ''}
   }
 
-  updateMessage = (evt) => {
-    this.setState({message: evt.target.value})
+  updateMessage = (evt: InputEvent) => {
+    this.setState({message: evt.currentTarget.value})
   }
 
   addMessage = () => {
@@ -34,10 +44,6 @@ class AddMessage extends Component {
       </div>
     )
   }
-}
-
-AddMessage.propTypes = {
-  addMessage: PropTypes.func.isRequired
 }
 
 export default AddMessage

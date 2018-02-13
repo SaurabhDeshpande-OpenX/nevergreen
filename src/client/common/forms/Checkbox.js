@@ -1,12 +1,21 @@
-import React, {Component} from 'react'
-import PropTypes from 'prop-types'
+// @flow
+
+import * as React from 'react'
 import classNames from 'classnames'
 import _ from 'lodash'
 import styles from './checkbox.scss'
+import type {InputEvent} from '../../Types'
 
-class Checkbox extends Component {
-  onChange = (evt) => {
-    this.props.onToggle(evt.target.checked)
+type Props = {
+  children: React.Node,
+  onToggle: (boolean) => void,
+  className?: string,
+  disabled?: boolean
+}
+
+class Checkbox extends React.Component<Props> {
+  onChange = (evt: InputEvent) => {
+    this.props.onToggle(evt.currentTarget.checked)
   }
 
   render() {
@@ -26,13 +35,6 @@ class Checkbox extends Component {
       </div>
     )
   }
-}
-
-Checkbox.propTypes = {
-  children: PropTypes.node.isRequired,
-  onToggle: PropTypes.func.isRequired,
-  className: PropTypes.string,
-  disabled: PropTypes.bool
 }
 
 export default Checkbox

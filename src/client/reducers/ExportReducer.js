@@ -1,11 +1,16 @@
-import Immutable from 'immutable'
+// @flow
+
+import * as Immutable from 'immutable'
 import {EXPORT_ERROR, EXPORT_SUCCESS, EXPORTING, NAVIGATED} from '../actions/Actions'
+import type {Action} from '../Types'
+
+type State = Immutable.Map<string, mixed>
 
 const DEFAULT_STATE = Immutable.Map({
   loaded: true
 })
 
-export function reduce(state = DEFAULT_STATE, action) {
+export function reduce(state: State = DEFAULT_STATE, action: Action): State {
   switch (action.type) {
     case EXPORTING:
       return state.withMutations((map) =>

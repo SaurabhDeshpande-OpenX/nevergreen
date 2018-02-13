@@ -1,11 +1,17 @@
+// @flow
+
 import React, {Component} from 'react'
-import PropTypes from 'prop-types'
 import Container from '../common/container/Container'
 import RemoveLink from './RemoveLink'
 import styles from './added-messages.scss'
 import _ from 'lodash'
 
-class AddedMessages extends Component {
+type Props = {
+  messages: string[],
+  removeMessage: (string) => void
+}
+
+class AddedMessages extends Component<Props> {
   render() {
     if (_.isEmpty(this.props.messages)) {
       return null
@@ -30,11 +36,6 @@ class AddedMessages extends Component {
       </Container>
     )
   }
-}
-
-AddedMessages.propTypes = {
-  messages: PropTypes.arrayOf(PropTypes.string).isRequired,
-  removeMessage: PropTypes.func.isRequired
 }
 
 export default AddedMessages

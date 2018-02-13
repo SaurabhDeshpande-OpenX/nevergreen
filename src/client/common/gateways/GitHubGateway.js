@@ -1,9 +1,24 @@
+// @flow
+
 import {get, patch, post} from './Gateway'
+import type {HttpRequest} from '../../Types'
+
+type Gist = {
+  id: string,
+  files: {
+    'configuration.json': {
+      size: number,
+      truncated: boolean,
+      raw_url: string
+    }
+  },
+  description: string,
+}
 
 const gistApiUrl = 'https://api.github.com/gists'
 const mimeType = 'application/vnd.github.v3+json'
 
-export function createGist(description, configuration, oauthToken) {
+export function createGist(description: string, configuration: string, oauthToken: string): HttpRequest<Gist> {
   const data = {
     description,
     'public': false,
@@ -17,7 +32,7 @@ export function createGist(description, configuration, oauthToken) {
   return post(gistApiUrl, data, {Authorization: `token ${oauthToken}`, Accept: mimeType})
 }
 
-export function updateGist(gistId, description, configuration, oauthToken) {
+export function updateGist(gistId: string, description: string, configuration: string, oauthToken: string): HttpRequest<Gist> {
   const data = {
     description,
     files: {
@@ -30,10 +45,10 @@ export function updateGist(gistId, description, configuration, oauthToken) {
   return patch(`${gistApiUrl}/${gistId}`, data, {Authorization: `token ${oauthToken}`, Accept: mimeType})
 }
 
-export function getGist(gistId) {
+export function getGist(gistId: string): HttpRequest<Gist> {
   return get(`${gistApiUrl}/${gistId}`, {Accept: mimeType})
 }
 
-export function getTruncatedFile(url) {
+export function getTruncatedFile(url: string): HttpRequest<string> {
   return get(url, {Accept: 'text/plain; charset=utf-8'})
 }

@@ -1,10 +1,16 @@
+// @flow
+
 import React, {Component} from 'react'
-import PropTypes from 'prop-types'
 import Container from '../common/container/Container'
 import styles from './help.scss'
 import ExternalLink from '../common/ExternalLink'
 
-class Help extends Component {
+type Props = {
+  keyboardShortcut: (boolean) => void,
+  showShortcuts?: boolean
+}
+
+class Help extends Component<Props> {
   componentWillUnmount() {
     this.props.keyboardShortcut(false)
   }
@@ -152,11 +158,6 @@ class Help extends Component {
       </section>
     )
   }
-}
-
-Help.propTypes = {
-  keyboardShortcut: PropTypes.func.isRequired,
-  showShortcuts: PropTypes.bool
 }
 
 export default Help

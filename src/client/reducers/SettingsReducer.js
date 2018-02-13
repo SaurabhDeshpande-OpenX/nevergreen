@@ -1,4 +1,6 @@
-import Immutable from 'immutable'
+// @flow
+
+import * as Immutable from 'immutable'
 import {
   BROKEN_BUILD_SOUND_FX,
   IMPORT_SUCCESS,
@@ -11,6 +13,9 @@ import {
 } from '../actions/Actions'
 import {MIN_REFRESH_TIME} from '../actions/SettingsActionCreators'
 import defaultSoundFx from '../settings/pacman_death.mp3'
+import type {Action} from '../Types'
+
+type State = Immutable.Map<string, mixed>
 
 const DEFAULT_STATE = Immutable.Map({
   showTrayName: false,
@@ -21,7 +26,7 @@ const DEFAULT_STATE = Immutable.Map({
   showBuildLabel: false
 })
 
-export function reduce(state = DEFAULT_STATE, action) {
+export function reduce(state: State = DEFAULT_STATE, action: Action) {
   switch (action.type) {
     case INITIALISED:
     case IMPORT_SUCCESS:

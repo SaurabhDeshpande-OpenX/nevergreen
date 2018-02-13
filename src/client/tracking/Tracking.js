@@ -1,10 +1,16 @@
+// @flow
+
 import React, {Component} from 'react'
-import PropTypes from 'prop-types'
 import AddTray from './AddTray'
 import TrayContainer from './tray/TrayContainer'
 import styles from './tracking.scss'
 
-class Tracking extends Component {
+type Props = {
+  trayIds: string[],
+  addTray: () => void
+}
+
+class Tracking extends Component<Props> {
   render() {
     return (
       <section className={styles.tracking}>
@@ -14,11 +20,6 @@ class Tracking extends Component {
       </section>
     )
   }
-}
-
-Tracking.propTypes = {
-  trayIds: PropTypes.arrayOf(PropTypes.string).isRequired,
-  addTray: PropTypes.func.isRequired
 }
 
 export default Tracking

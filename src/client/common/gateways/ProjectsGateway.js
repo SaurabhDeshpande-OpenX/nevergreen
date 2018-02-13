@@ -1,11 +1,14 @@
+// @flow
+
 import {fakeResponse, post} from './Gateway'
 import _ from 'lodash'
+import type {HttpRequest, Project, Tray} from '../../Types'
 
-function includesProjects(tray) {
+function includesProjects(tray: Tray): boolean {
   return !_.isEmpty(tray.included)
 }
 
-export function fetchAll(trays) {
+export function fetchAll(trays: Tray[]): HttpRequest<Project[]> {
   const data = trays.map(({trayId, url, username, password, serverType}) => {
     return {trayId, url, username, password, serverType}
   })
@@ -13,7 +16,7 @@ export function fetchAll(trays) {
   return post('/api/projects/all', data)
 }
 
-export function interesting(trays, selected) {
+export function interesting(trays: Tray[], selected: string[]): HttpRequest<Project[]> {
   const data = trays.map((tray) => {
     return {
       trayId: tray.trayId,

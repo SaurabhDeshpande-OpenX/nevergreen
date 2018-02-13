@@ -1,3 +1,5 @@
+// @flow
+
 import localforage from 'localforage'
 import Promise from 'promise'
 import _ from 'lodash'
@@ -8,13 +10,13 @@ export default {
     return localforage.ready()
   },
 
-  save(data) {
+  save(data: Object): Promise {
     return Promise.all(_.toPairs(data).map((pair) => {
       return localforage.setItem(pair[0], pair[1])
     }))
   },
 
-  load() {
+  load(): Promise {
     let configuration = {}
     return localforage.iterate((value, key) => {
       configuration[key] = value
@@ -23,7 +25,7 @@ export default {
     })
   },
 
-  clear() {
+  clear(): Promise {
     return localforage.clear()
   }
 }

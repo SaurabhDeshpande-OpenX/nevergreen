@@ -1,14 +1,17 @@
+// @flow
+
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {toJS} from '../../common/ImmutableToJs'
 import {refreshTray, selectProject} from '../../actions/TrackingActionCreators'
 import AvailableProjects from './AvailableProjects'
+import type {Store} from '../../Types'
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch): Object {
   return bindActionCreators({refreshTray, selectProject}, dispatch)
 }
 
-function mapStateToProps(store, ownProps) {
+function mapStateToProps(store: Store, ownProps): Object {
   const tray = store.getIn(['trays', ownProps.trayId])
   const projects = store.getIn(['projects', ownProps.trayId]).toList()
   const selected = store.getIn(['selected', ownProps.trayId])

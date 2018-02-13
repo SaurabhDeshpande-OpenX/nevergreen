@@ -1,10 +1,22 @@
-import React, {Component} from 'react'
-import PropTypes from 'prop-types'
+// @flow
+
+import * as React from 'react'
 import classNames from 'classnames'
 import _ from 'lodash'
 import styles from './input.scss'
+import type {InputEvent} from '../../Types'
 
-class Input extends Component {
+type Props = {
+  children: React.Node,
+  onEnter?: (InputEvent) => void,
+  className?: string,
+  readOnly?: boolean,
+  focus?: boolean,
+  disabled?: boolean
+}
+
+class Input extends React.Component<Props> {
+  node: HTMLElement
 
   maybeFocus = () => {
     if (this.props.focus) {
@@ -12,7 +24,7 @@ class Input extends Component {
     }
   }
 
-  onEnter = (evt) => {
+  onEnter = (evt: InputEvent) => {
     if (evt.key === 'Enter' && this.props.onEnter) {
       this.props.onEnter(evt)
     }
@@ -45,15 +57,6 @@ class Input extends Component {
       </label>
     )
   }
-}
-
-Input.propTypes = {
-  children: PropTypes.node.isRequired,
-  onEnter: PropTypes.func,
-  className: PropTypes.string,
-  readOnly: PropTypes.bool,
-  focus: PropTypes.bool,
-  disabled: PropTypes.bool
 }
 
 export default Input

@@ -1,5 +1,6 @@
+// @flow
+
 import React, {Component} from 'react'
-import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import ExternalLink from '../common/ExternalLink'
 import styles from './footer.scss'
@@ -7,7 +8,11 @@ import version from '../../../resources/version.txt'
 import versionMeta from '../../../resources/version_meta.txt'
 import versionName from '../../../resources/version_name.txt'
 
-class Footer extends Component {
+type Props = {
+  fullScreen?: boolean
+}
+
+class Footer extends Component<Props> {
   render() {
     const footerClassNames = classNames(styles.siteFooter, {[styles.fullscreen]: this.props.fullScreen})
     const fullVersion = `${version}+${versionMeta}`
@@ -23,10 +28,6 @@ class Footer extends Component {
       </footer>
     )
   }
-}
-
-Footer.propTypes = {
-  fullScreen: PropTypes.bool
 }
 
 export default Footer

@@ -1,11 +1,16 @@
+// @flow
+
 import React, {Component} from 'react'
-import PropTypes from 'prop-types'
 import Schema from './Schema'
 import ImportContainer from './import/ImportContainer'
 import ExportContainer from './export/ExportContainer'
 import styles from './backup.scss'
 
-class Backup extends Component {
+type Props = {
+  schema: string
+}
+
+class Backup extends Component<Props> {
   render() {
     return (
       <section className={styles.backup}>
@@ -16,10 +21,6 @@ class Backup extends Component {
       </section>
     )
   }
-}
-
-Backup.propTypes = {
-  schema: PropTypes.string
 }
 
 export default Backup

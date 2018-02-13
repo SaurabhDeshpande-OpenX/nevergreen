@@ -1,9 +1,14 @@
+// @flow
+
 import React, {Component} from 'react'
-import PropTypes from 'prop-types'
 import ScaledGrid from '../common/scale/ScaledGrid'
 import styles from './success-message.scss'
 
-class SuccessMessage extends Component {
+type Props = {
+  message: string
+}
+
+class SuccessMessage extends Component<Props> {
   render() {
     return (
       <ScaledGrid>
@@ -13,10 +18,6 @@ class SuccessMessage extends Component {
       </ScaledGrid>
     )
   }
-}
-
-SuccessMessage.propTypes = {
-  message: PropTypes.string.isRequired
 }
 
 export default SuccessMessage

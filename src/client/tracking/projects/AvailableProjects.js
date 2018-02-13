@@ -1,5 +1,6 @@
+// @flow
+
 import React, {Component} from 'react'
-import PropTypes from 'prop-types'
 import AvailableProject from './AvailableProject'
 import Messages from '../../common/messages/Messages'
 import Input from '../../common/forms/Input'
@@ -8,11 +9,40 @@ import Refresh from './Refresh'
 import _ from 'lodash'
 import styles from './available-projects.scss'
 import {isBlank} from '../../common/Utils'
+import type {HttpRequest, InputEvent, Project} from '../../Types'
 
-class AvailableProjects extends Component {
-  constructor(props) {
+type Props = {
+  trayId: string,
+  index: number,
+  errors: string[],
+  url: string,
+  username?: string,
+  password?: string,
+  serverType?: string,
+  projects: Project[],
+  selected: string[],
+  selectProject: (string, string, boolean) => void,
+  timestamp?: string,
+  refreshTray: (Object, ?HttpRequest) => void,
+  pendingRequest?: HttpRequest
+}
+
+type State = {
+  filter: ?RegExp,
+  filterErrors: string[],
+  disableButtons: boolean
+}
+
+class AvailableProjects extends Component<Props, State> {
+  node: ?HTMLElement
+
+  constructor(props: Props) {
     super(props)
-    this.state = {filter: null, filterErrors: null, disableButtons: false}
+    this.state = {
+      filter: null,
+      filterErrors: [],
+      disableButtons: false
+    }
   }
 
   includeAll = () => {
@@ -27,21 +57,32 @@ class AvailableProjects extends Component {
     })
   }
 
-  updateFilter = (evt) => {
-    if (isBlank(evt.target.value)) {
-      this.setState({filter: null, filterErrors: null, disableButtons: false})
+  updateFilter = (evt: InputEvent) => {
+    if (isBlank(evt.currentTarget.value)) {
+      this.setState({
+        filter: null,
+        filterErrors: [],
+        disableButtons: false
+      })
     } else {
       try {
-        const regEx = new RegExp(evt.target.value)
-        this.setState({filter: regEx, filterErrors: null, disableButtons: true})
+        this.setState({
+          filter: new RegExp(evt.currentTarget.value),
+          filterErrors: [],
+          disableButtons: true
+        })
       } catch (e) {
-        this.setState({filterErrors: [`Project filter not applied, ${e.message}`]})
+        this.setState({
+          filterErrors: [`Project filter not applied, ${e.message}`]
+        })
       }
     }
   }
 
   scrollToTop = () => {
-    this.node.scrollIntoView()
+    if (this.node) {
+      this.node.scrollIntoView()
+    }
   }
 
   refreshTray = () => {
@@ -106,26 +147,6 @@ class AvailableProjects extends Component {
       </section>
     )
   }
-}
-
-AvailableProjects.propTypes = {
-  trayId: PropTypes.string.isRequired,
-  index: PropTypes.number.isRequired,
-  errors: PropTypes.arrayOf(PropTypes.string),
-  url: PropTypes.string.isRequired,
-  username: PropTypes.string,
-  password: PropTypes.string,
-  serverType: PropTypes.string,
-  projects: PropTypes.arrayOf(PropTypes.shape({
-    projectId: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    stage: PropTypes.string
-  })).isRequired,
-  selected: PropTypes.arrayOf(PropTypes.string).isRequired,
-  selectProject: PropTypes.func.isRequired,
-  timestamp: PropTypes.string,
-  refreshTray: PropTypes.func.isRequired,
-  pendingRequest: PropTypes.object
 }
 
 export default AvailableProjects

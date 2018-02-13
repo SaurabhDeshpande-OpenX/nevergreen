@@ -1,24 +1,46 @@
-import React, {Component, Fragment} from 'react'
-import PropTypes from 'prop-types'
+// @flow
+
+import * as React from 'react'
 import Input from '../../../common/forms/Input'
 import styles from './github.scss'
+import type {InputEvent} from '../../../Types'
 
-class GitHub extends Component {
-  constructor(props) {
+type Props = {
+  loaded?: boolean,
+  configuration: string,
+  uploadToGitHub: (string, string, string, string) => void,
+  gitHubSetGistId: (string) => void,
+  gitHubSetDescription: (string) => void,
+  gistId: string,
+  description: string
+}
+
+type State = {
+  oauthToken: string,
+  gistId: string,
+  description: string
+}
+
+class GitHub extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props)
-    this.state = {oauthToken: '', gistId: props.gistId, description: props.description}
+    this.state = {
+      oauthToken: '',
+      gistId: props.gistId,
+      description: props.description
+    }
   }
 
-  oauthTokenChanged = (evt) => {
-    this.setState({oauthToken: evt.target.value})
+  oauthTokenChanged = (evt: InputEvent) => {
+    this.setState({oauthToken: evt.currentTarget.value})
   }
 
-  descriptionChanged = (evt) => {
-    this.setState({description: evt.target.value})
+  descriptionChanged = (evt: InputEvent) => {
+    this.setState({description: evt.currentTarget.value})
   }
 
-  gistIdChanged = (evt) => {
-    this.setState({gistId: evt.target.value})
+  gistIdChanged = (evt: InputEvent) => {
+    this.setState({gistId: evt.currentTarget.value})
   }
 
   setDescription = () => {
@@ -33,7 +55,7 @@ class GitHub extends Component {
     this.props.uploadToGitHub(this.state.gistId, this.state.description, this.props.configuration, this.state.oauthToken)
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     this.setState({gistId: nextProps.gistId, description: nextProps.description})
   }
 
@@ -41,7 +63,7 @@ class GitHub extends Component {
     const disabled = !this.props.loaded
 
     return (
-      <Fragment>
+      <React.Fragment>
         <Input className={styles.oauthToken}
                onChange={this.oauthTokenChanged}
                onBlur={this.oauthTokenChanged}
@@ -65,19 +87,9 @@ class GitHub extends Component {
           gist ID
         </Input>
         <button className={styles.export} onClick={this.upload} disabled={disabled}>export</button>
-      </Fragment>
+      </React.Fragment>
     )
   }
-}
-
-GitHub.propTypes = {
-  loaded: PropTypes.bool,
-  configuration: PropTypes.string.isRequired,
-  uploadToGitHub: PropTypes.func.isRequired,
-  gitHubSetGistId: PropTypes.func.isRequired,
-  gitHubSetDescription: PropTypes.func.isRequired,
-  gistId: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired
 }
 
 export default GitHub

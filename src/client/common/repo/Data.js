@@ -1,3 +1,5 @@
+// @flow
+
 import validator from 'is-my-json-valid'
 
 export const SCHEMA = {
@@ -95,14 +97,14 @@ export const SCHEMA = {
   additionalProperties: false
 }
 
-export function validate(data) {
+export function validate(data: Object): string[] {
   const validate = validator(SCHEMA, {greedy: true, verbose: true})
   validate(data)
   const errors = validate.errors
   return errors ? errors.map((error) => `'${error.field}' ${error.message}, expected '${error.type}' got '${error.value}'`) : []
 }
 
-export function filter(data) {
+export function filter(data: Object): Object {
   const filter = validator.filter(SCHEMA)
   return filter(data)
 }

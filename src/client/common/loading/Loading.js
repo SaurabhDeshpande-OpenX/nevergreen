@@ -1,11 +1,17 @@
-import React, {Component, Fragment} from 'react'
-import PropTypes from 'prop-types'
+// @flow
+
+import * as React from 'react'
 import styles from './loading.scss'
 
-class Loading extends Component {
+type Props = {
+  children: React.Node,
+  loaded?: boolean
+}
+
+class Loading extends React.Component<Props> {
   render() {
     if (this.props.loaded) {
-      return <Fragment>{this.props.children}</Fragment>
+      return <React.Fragment>{this.props.children}</React.Fragment>
     } else {
       return (
         <div className={styles.loading}
@@ -21,11 +27,6 @@ class Loading extends Component {
       )
     }
   }
-}
-
-Loading.propTypes = {
-  children: PropTypes.node,
-  loaded: PropTypes.bool
 }
 
 export default Loading

@@ -1,10 +1,12 @@
+// @flow
+
 import {connect} from 'react-redux'
 import {toJS} from '../../common/ImmutableToJs'
 import Import from './Import'
+import type {Store} from '../../Types'
 
-function mapStateToProps(store) {
+function mapStateToProps(store: Store): Object {
   return {
-    loaded: store.getIn(['backupImport', 'loaded']),
     errors: store.getIn(['backupImport', 'errors']),
     infos: store.getIn(['backupImport', 'infos'])
   }

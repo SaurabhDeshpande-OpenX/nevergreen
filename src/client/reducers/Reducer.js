@@ -1,3 +1,5 @@
+// @flow
+
 import {combineReducers} from 'redux-immutable'
 import {reduce as nevergreen} from './NevergreenReducer'
 import {reduce as audioVisual} from './SettingsReducer'

@@ -1,4 +1,6 @@
-import Immutable from 'immutable'
+// @flow
+
+import * as Immutable from 'immutable'
 import {encryptPassword as encrypt} from '../common/gateways/SecurityGateway'
 import {fetchAll} from '../common/gateways/ProjectsGateway'
 import {send} from '../common/gateways/Gateway'
@@ -22,18 +24,19 @@ import {
   SET_TRAY_USERNAME,
   TRAY_ADDED
 } from './Actions'
+import type {Action, HttpRequest, Project, ThunkAction, Tray} from '../Types'
 
-function hasScheme(url) {
+function hasScheme(url: string): boolean {
   return _.size(_.split(url, '://')) > 1
 }
 
-function abortPendingRequest(req) {
+function abortPendingRequest(req: ?HttpRequest): void {
   if (req) {
     req.abort()
   }
 }
 
-export function trayAdded(trayId, url, username) {
+export function trayAdded(trayId: string, url: string, username: string): Action {
   return {
     type: TRAY_ADDED,
     trayId,
@@ -41,66 +44,66 @@ export function trayAdded(trayId, url, username) {
   }
 }
 
-export function highlightTray(trayId) {
+export function highlightTray(trayId: string): Action {
   return {type: HIGHLIGHT_TRAY, trayId}
 }
 
-export function encryptingPassword(trayId, password, request) {
+export function encryptingPassword(trayId: string, password: string, request: ?HttpRequest): Action {
   return {type: ENCRYPTING_PASSWORD, trayId, password, request}
 }
 
-export function passwordEncrypted(trayId, password) {
+export function passwordEncrypted(trayId: string, password: string): Action {
   return {type: PASSWORD_ENCRYPTED, trayId, password}
 }
 
-export function passwordEncryptError(trayId, errors) {
+export function passwordEncryptError(trayId: string, errors: string[]): Action {
   return {type: PASSWORD_ENCRYPT_ERROR, trayId, errors: Immutable.List(errors)}
 }
 
-export function removeTray(trayId, pendingRequest) {
+export function removeTray(trayId: string, pendingRequest: ?HttpRequest): Action {
   abortPendingRequest(pendingRequest)
   return {type: REMOVE_TRAY, trayId}
 }
 
-export function projectsFetching(trayId, request) {
+export function projectsFetching(trayId: string, request: ?HttpRequest): Action {
   return {type: PROJECTS_FETCHING, trayId, request}
 }
 
-export function projectsFetched(trayId, projects) {
+export function projectsFetched(trayId: string, projects: Project[]): Action {
   const data = Immutable.fromJS(projects)
-  const serverType = data.first() ? data.first().get('serverType') : ''
+  const serverType = projects[0] ? projects[0].serverType : ''
   return {type: PROJECTS_FETCHED, trayId, data, serverType, timestamp: now()}
 }
 
-export function projectsFetchError(trayId, errors) {
+export function projectsFetchError(trayId: string, errors: string[]): Action {
   return {type: PROJECTS_FETCH_ERROR, trayId, errors: Immutable.List(errors)}
 }
 
-export function setTrayName(trayId, name) {
+export function setTrayName(trayId: string, name: string): Action {
   return {type: SET_TRAY_NAME, trayId, name}
 }
 
-export function setServerType(trayId, serverType) {
+export function setServerType(trayId: string, serverType: string): Action {
   return {type: SET_SERVER_TYPE, trayId, serverType}
 }
 
-export function setTrayUsername(trayId, username) {
+export function setTrayUsername(trayId: string, username: string): Action {
   return {type: SET_TRAY_USERNAME, trayId, username}
 }
 
-export function setTrayUrl(trayId, url) {
+export function setTrayUrl(trayId: string, url: string): Action {
   return {type: SET_TRAY_URL, trayId, url}
 }
 
-export function setTrayId(originalTrayId, newTrayId) {
+export function setTrayId(originalTrayId: string, newTrayId: string): Action {
   return {type: SET_TRAY_ID, originalTrayId, newTrayId}
 }
 
-export function selectProject(trayId, projectId, selected) {
+export function selectProject(trayId: string, projectId: string, selected: boolean): Action {
   return {type: SELECT_PROJECT, trayId, projectId, selected}
 }
 
-export function updateTrayId(tray, newTrayId, pendingRequest) {
+export function updateTrayId(tray: Tray, newTrayId: string, pendingRequest: ?HttpRequest): ThunkAction {
   return function (dispatch) {
     dispatch(setTrayId(tray.trayId, newTrayId))
     const updatedTray = {...tray, trayId: newTrayId}
@@ -108,7 +111,7 @@ export function updateTrayId(tray, newTrayId, pendingRequest) {
   }
 }
 
-export function encryptPassword(trayId, password, pendingRequest) {
+export function encryptPassword(trayId: string, password: string, pendingRequest: ?HttpRequest): ThunkAction {
   abortPendingRequest(pendingRequest)
 
   return function (dispatch) {
@@ -128,7 +131,7 @@ export function encryptPassword(trayId, password, pendingRequest) {
   }
 }
 
-export function addTray(enteredUrl, username, rawPassword, existingTrays) {
+export function addTray(enteredUrl: string, username: string, rawPassword: string, existingTrays: Tray[]): ThunkAction {
   return function (dispatch) {
     const url = hasScheme(enteredUrl) ? enteredUrl : 'http://' + enteredUrl
     const trayId = url
@@ -148,7 +151,7 @@ export function addTray(enteredUrl, username, rawPassword, existingTrays) {
   }
 }
 
-export function refreshTray(tray, pendingRequest) {
+export function refreshTray(tray: Tray, pendingRequest: ?HttpRequest): ThunkAction {
   abortPendingRequest(pendingRequest)
 
   return function (dispatch) {

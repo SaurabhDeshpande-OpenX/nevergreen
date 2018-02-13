@@ -1,37 +1,42 @@
+// @flow
+
 import React, {Component} from 'react'
-import PropTypes from 'prop-types'
 import Mousetrap from 'mousetrap'
 import _ from 'lodash'
 
-function click(parent) {
-  parent.focus()
-  parent.click()
+function click(node: ?HTMLElement): boolean {
+  if (node) {
+    node.focus()
+    node.click()
+  }
   return false
 }
 
-class Shortcut extends Component {
+type Props = {
+  hotkeys: string[]
+}
+
+class Shortcut extends Component<Props> {
+  node: ?HTMLElement
+
   componentDidMount() {
-    Mousetrap.bind(this.props.hotkeys, () => click(this.node.parentNode))
+    Mousetrap.bind(this.props.hotkeys, () => click(this.node))
   }
 
   componentWillUnmount() {
     Mousetrap.unbind(this.props.hotkeys)
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     if (!_.isEqual(this.props.hotkeys, nextProps.hotkeys)) {
       Mousetrap.unbind(this.props.hotkeys)
-      Mousetrap.bind(nextProps.hotkeys, () => click(this.node.parentNode))
+      Mousetrap.bind(nextProps.hotkeys, () => click(this.node))
     }
   }
 
   render() {
     return <span ref={(node) => this.node = node}/>
   }
-}
-
-Shortcut.propTypes = {
-  hotkeys: PropTypes.arrayOf(PropTypes.string).isRequired
 }
 
 export default Shortcut

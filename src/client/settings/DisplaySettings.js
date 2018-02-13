@@ -1,5 +1,6 @@
+// @flow
+
 import React, {Component} from 'react'
-import PropTypes from 'prop-types'
 import Container from '../common/container/Container'
 import Checkbox from '../common/forms/Checkbox'
 import ScaledGrid from '../common/scale/ScaledGrid'
@@ -13,26 +14,38 @@ function randomBuildLabel() {
   return `${_.random(1, 999)}`
 }
 
-class DisplaySettings extends Component {
-  constructor(props) {
+type Props = {
+  showTrayName: boolean,
+  showBrokenBuildTime: boolean,
+  showBuildLabel: boolean,
+  setShowBrokenBuildTime: (boolean) => void,
+  setShowTrayName: (boolean) => void,
+  setShowBuildLabel: (boolean) => void
+}
+
+type State = {
+  lastBuildTime: string
+}
+
+class DisplaySettings extends Component<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = {lastBuildTime: format(new Date())}
   }
 
-  toggleBrokenBuildTime = (newValue) => {
+  toggleBrokenBuildTime = (newValue: boolean) => {
     this.props.setShowBrokenBuildTime(newValue)
   }
 
-  toggleTrayName = (newValue) => {
+  toggleTrayName = (newValue: boolean) => {
     this.props.setShowTrayName(newValue)
   }
 
-  toggleBuildLabel = (newValue) => {
+  toggleBuildLabel = (newValue: boolean) => {
     this.props.setShowBuildLabel(newValue)
   }
 
   render() {
-
     return (
       <Container title='display' className={styles.container}>
         <div className={styles.checkboxes}>
@@ -89,15 +102,6 @@ class DisplaySettings extends Component {
       </Container>
     )
   }
-}
-
-DisplaySettings.propTypes = {
-  showTrayName: PropTypes.bool.isRequired,
-  showBrokenBuildTime: PropTypes.bool.isRequired,
-  showBuildLabel: PropTypes.bool.isRequired,
-  setShowBrokenBuildTime: PropTypes.func.isRequired,
-  setShowTrayName: PropTypes.func.isRequired,
-  setShowBuildLabel: PropTypes.func.isRequired
 }
 
 export default DisplaySettings

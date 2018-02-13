@@ -1,23 +1,25 @@
+// @flow
+
 import _ from 'lodash'
 import {debug, warn} from '../Logger'
 
 const MIN_FONT_SIZE = 10
 const PADDING_CHARS = 2 // 1em = 2 characters
 
-function paddingPixels(fontSize) {
+function paddingPixels(fontSize: number): number {
   return PADDING_CHARS * fontSize
 }
 
-function longestStringInArray(words) {
+function longestStringInArray(words: string[]): number {
   return words.reduce((largestFound, candidate) => Math.max(candidate.length, largestFound), 0)
 }
 
-function findLongestWord(sentences) {
+function findLongestWord(sentences: string[]): number {
   const individualWords = _.flatten(sentences.map((sentence) => sentence.split(' ')))
   return longestStringInArray(individualWords)
 }
 
-function linesRequired(sentence, widthPixels, charWidthScale, fontSize) {
+function linesRequired(sentence: string, widthPixels: number, charWidthScale: number, fontSize: number): number {
   const actualWidth = widthPixels - paddingPixels(fontSize)
   let lineNumber = 1
   let currentLinePosition = 0
@@ -39,17 +41,13 @@ function linesRequired(sentence, widthPixels, charWidthScale, fontSize) {
   return lineNumber
 }
 
-function maximumPossibleFontSize(sentences, widthPixels, charWidthScale) {
+function maximumPossibleFontSize(sentences: string[], widthPixels: number, charWidthScale: number): number {
   const longestWordCharacters = findLongestWord(sentences)
   const longestWordPixels = charWidthScale * longestWordCharacters
-  const fontSize = Math.floor(widthPixels / (longestWordPixels + paddingPixels(1)))
-
-  debug(`maximum possible fontSize [${fontSize}px] for width [${widthPixels}px] and sentences [${sentences}]`)
-
-  return fontSize
+  return Math.floor(widthPixels / (longestWordPixels + paddingPixels(1)))
 }
 
-export function ideal(sentences, heightPixels, widthPixels, charHeightScale, charWidthScale) {
+export function ideal(sentences: string[], heightPixels: number, widthPixels: number, charHeightScale: number, charWidthScale: number): number {
   if (heightPixels <= 0 || widthPixels <= 0) {
     return MIN_FONT_SIZE
   }

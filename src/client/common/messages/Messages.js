@@ -1,10 +1,17 @@
+// @flow
+
 import React, {Component} from 'react'
-import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import _ from 'lodash'
 import styles from './messages.scss'
 
-class Messages extends Component {
+type Props = {
+  type: 'info' | 'error',
+  messages: string[],
+  className?: string
+}
+
+class Messages extends Component<Props> {
   render() {
     if (_.isEmpty(this.props.messages)) {
       return null
@@ -23,12 +30,6 @@ class Messages extends Component {
       </ul>
     )
   }
-}
-
-Messages.propTypes = {
-  type: PropTypes.oneOf(['info', 'error']).isRequired,
-  messages: PropTypes.arrayOf(PropTypes.string),
-  className: PropTypes.string
 }
 
 export default Messages

@@ -1,3 +1,5 @@
+// @flow
+
 import 'babel-polyfill'
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -6,7 +8,7 @@ import {applyMiddleware, compose, createStore} from 'redux'
 import createHistory from 'history/createBrowserHistory'
 import {Route, Router, Switch} from 'react-router-dom'
 import thunkMiddleware from 'redux-thunk'
-import Immutable from 'immutable'
+import * as Immutable from 'immutable'
 import LocalRespoistory from './common/repo/LocalRepository'
 import {reducer} from './reducers/Reducer'
 import {filter} from './common/repo/Data'
@@ -44,20 +46,24 @@ const history = createHistory()
 
 history.listen(() => store.dispatch(navigated()))
 
-ReactDOM.render(
-  <Provider store={store}>
-    <Router history={history}>
-      <NevergreenContainer>
-        <Switch>
-          <Route exact path='/monitor' component={MonitorContainer}/>
-          <Route exact path='/tracking' component={TrackingContainer}/>
-          <Route exact path='/success' component={SuccessContainer}/>
-          <Route exact path='/settings' component={SettingsContainer}/>
-          <Route exact path='/backup' component={BackupContainer}/>
-          <Route exact path='/help' component={HelpContainer}/>
-          <Route component={TrackingContainer}/>
-        </Switch>
-      </NevergreenContainer>
-    </Router>
-  </Provider>,
-  document.getElementById('root'))
+const rootElement = document.getElementById('root')
+
+if (rootElement) {
+  ReactDOM.render(
+    <Provider store={store}>
+      <Router history={history}>
+        <NevergreenContainer>
+          <Switch>
+            <Route exact path='/monitor' component={MonitorContainer}/>
+            <Route exact path='/tracking' component={TrackingContainer}/>
+            <Route exact path='/success' component={SuccessContainer}/>
+            <Route exact path='/settings' component={SettingsContainer}/>
+            <Route exact path='/backup' component={BackupContainer}/>
+            <Route exact path='/help' component={HelpContainer}/>
+            <Route component={TrackingContainer}/>
+          </Switch>
+        </NevergreenContainer>
+      </Router>
+    </Provider>,
+    rootElement)
+}

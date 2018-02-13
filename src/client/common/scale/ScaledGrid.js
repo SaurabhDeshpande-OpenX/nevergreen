@@ -1,5 +1,6 @@
-import React, {Children, Component} from 'react'
-import PropTypes from 'prop-types'
+// @flow
+
+import * as React from 'react'
 import Resizable from '../Resizable'
 import {ideal} from './ScaleText'
 import FontMetrics from './FontMetrics'
@@ -13,7 +14,7 @@ const DESKTOP_BREAKPOINT = 1440
 const MIN_CHILD_HEIGHT = 32
 const CHILD_MARGIN = 5
 
-function columns(width) {
+function columns(width: number): number {
   if (width < TABLET_BREAKPOINT) {
     return 1
   } else if (width < DESKTOP_BREAKPOINT) {
@@ -23,26 +24,30 @@ function columns(width) {
   }
 }
 
-function numberOfRows(totalNumberOfItems, width) {
+function numberOfRows(totalNumberOfItems: number, width: number): number {
   return Math.ceil(totalNumberOfItems / columns(width))
 }
 
-function numberOfColumns(totalNumberOfItems, width) {
+function numberOfColumns(totalNumberOfItems: number, width: number): number {
   return Math.min(columns(width), totalNumberOfItems)
 }
 
-function calculateChildWidth(totalNumberOfItems, width) {
+function calculateChildWidth(totalNumberOfItems: number, width: number): number {
   const columns = numberOfColumns(totalNumberOfItems, width)
   return Math.floor((width - (columns * CHILD_MARGIN * 2)) / columns)
 }
 
-function calculateChildHeight(totalNumberOfItems, width, height) {
+function calculateChildHeight(totalNumberOfItems: number, width: number, height: number): number {
   const rows = numberOfRows(totalNumberOfItems, width)
   const calculated = Math.floor((height - (rows * CHILD_MARGIN * 2)) / rows)
   return Math.max(calculated, MIN_CHILD_HEIGHT)
 }
 
-function calculateChildDimensions(node, fontMetrics, childrenText) {
+function calculateChildDimensions(node: ?HTMLElement, fontMetrics: ?FontMetrics, childrenText: string[]): State {
+  if (!node || !fontMetrics) {
+    return {childWidth: 0, childHeight: 0, fontSize: 0}
+  }
+
   const totalNumberOfItems = childrenText.length
   const width = node.offsetWidth
   const height = node.offsetHeight
@@ -58,8 +63,22 @@ function calculateChildDimensions(node, fontMetrics, childrenText) {
   return {childWidth, childHeight, fontSize}
 }
 
-class ScaledGrid extends Component {
-  constructor(props) {
+type Props = {
+  children: React.Node
+}
+
+type State = {
+  childWidth: number,
+  childHeight: number,
+  fontSize: number
+}
+
+class ScaledGrid extends React.Component<Props, State> {
+  fontMetrics: ?FontMetrics
+  childrenText: string[]
+  node: ?HTMLElement
+
+  constructor(props: Props) {
     super(props)
     this.state = {childWidth: 0, childHeight: 0, fontSize: 0}
     this.childrenText = []
@@ -89,12 +108,12 @@ class ScaledGrid extends Component {
         <FontMetrics ref={(node) => this.fontMetrics = node}/>
         <ul className={styles.scaledGrid} ref={(node) => this.node = node}>
           {
-            Children.map(this.props.children, (child, index) => {
-              const getTextContent = (node) => {
+            React.Children.map(this.props.children, (child, index) => {
+              const getTextContent = (node: ?HTMLElement) => {
                 if (node) {
                   this.childrenText[index] = node.textContent
                 } else {
-                  _.remove(this.childrenText, (v, i) => i === index)
+                  _.remove(this.childrenText, (v: string, i: number): boolean => i === index)
                 }
               }
               return <li className={styles.item} ref={getTextContent} style={style}>{child}</li>
@@ -106,13 +125,6 @@ class ScaledGrid extends Component {
       </span>
     )
   }
-}
-
-ScaledGrid.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.element),
-    PropTypes.element
-  ]).isRequired
 }
 
 export default ScaledGrid

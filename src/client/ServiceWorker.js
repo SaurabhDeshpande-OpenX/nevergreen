@@ -1,7 +1,13 @@
+// @flow
+
 import {error, info} from './common/Logger'
 
 export function registerServiceWorker() {
-  if ('serviceWorker' in navigator) {
+  if (
+    navigator
+    && navigator.serviceWorker
+    && navigator.serviceWorker.register
+  ) {
     navigator.serviceWorker.register('/service-worker.js').then((registration) => {
       registration.onupdatefound = () => {
         const installingWorker = registration.installing
@@ -9,7 +15,7 @@ export function registerServiceWorker() {
         installingWorker.onstatechange = () => {
           switch (installingWorker.state) {
             case 'installed':
-              if (navigator.serviceWorker.controller) {
+              if (navigator.serviceWorker && navigator.serviceWorker.controller) {
                 info('New or updated content is available')
               } else {
                 info('Content is now available offline')

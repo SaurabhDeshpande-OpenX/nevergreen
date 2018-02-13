@@ -1,10 +1,23 @@
+// @flow
+
 import React, {Component} from 'react'
-import PropTypes from 'prop-types'
 import Input from '../common/forms/Input'
 import styles from './add-tray.scss'
+import type {InputEvent} from '../Types'
 
-class AddTray extends Component {
-  constructor(props) {
+type Props = {
+  existingTrayIds: string[],
+  addTray: (string, string, string, string[]) => void
+}
+
+type State = {
+  url: string,
+  username: string,
+  password: string
+}
+
+class AddTray extends Component<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = {url: '', username: '', password: ''}
   }
@@ -14,16 +27,16 @@ class AddTray extends Component {
     this.setState({url: '', username: '', password: ''})
   }
 
-  updateUrl = (evt) => {
-    this.setState({url: evt.target.value})
+  updateUrl = (evt: InputEvent) => {
+    this.setState({url: evt.currentTarget.value})
   }
 
-  updateUsername = (evt) => {
-    this.setState({username: evt.target.value})
+  updateUsername = (evt: InputEvent) => {
+    this.setState({username: evt.currentTarget.value})
   }
 
-  updatePassword = (evt) => {
-    this.setState({password: evt.target.value})
+  updatePassword = (evt: InputEvent) => {
+    this.setState({password: evt.currentTarget.value})
   }
 
   render() {
@@ -59,11 +72,6 @@ class AddTray extends Component {
       </div>
     )
   }
-}
-
-AddTray.propTypes = {
-  existingTrayIds: PropTypes.arrayOf(PropTypes.string).isRequired,
-  addTray: PropTypes.func.isRequired
 }
 
 export default AddTray

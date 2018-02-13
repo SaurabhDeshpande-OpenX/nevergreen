@@ -1,5 +1,6 @@
+// @flow
+
 import React, {Component} from 'react'
-import PropTypes from 'prop-types'
 import Container from '../common/container/Container'
 import Messages from '../common/messages/Messages'
 import Input from '../common/forms/Input'
@@ -8,20 +9,36 @@ import classNames from 'classnames'
 import _ from 'lodash'
 import styles from './audio-settings.scss'
 import {isBlank} from '../common/Utils'
+import type {InputEvent} from '../Types'
 
-function hasScheme(url) {
+function hasScheme(url: string): boolean {
   return _.size(_.split(url, '://')) > 1
 }
 
-function pause(audio) {
+function pause(audio: ?HTMLAudioElement): void {
   if (audio) {
     audio.pause()
     audio.currentTime = 0
   }
 }
 
-class AudioSettings extends Component {
-  constructor(props) {
+type Props = {
+  playBrokenBuildSoundFx: boolean,
+  brokenBuildSoundFx: string,
+  setPlayBrokenBuildSoundFx: (boolean) => void,
+  setBrokenBuildSoundFx: (string) => void
+}
+
+type State = {
+  errors: string[],
+  audio: ?HTMLAudioElement,
+  soundFx: string,
+  playEnabled: boolean,
+  playing: boolean
+}
+
+class AudioSettings extends Component<Props, State> {
+  constructor(props: Props) {
     super(props)
     const soundFx = isBlank(props.brokenBuildSoundFx) || hasScheme(props.brokenBuildSoundFx)
       ? this.props.brokenBuildSoundFx
@@ -35,12 +52,12 @@ class AudioSettings extends Component {
     }
   }
 
-  toggleBrokenSounds = (newValue) => {
+  toggleBrokenSounds = (newValue: boolean) => {
     this.props.setPlayBrokenBuildSoundFx(newValue)
   }
 
-  updateSoundFx = (evt) => {
-    this.setState({soundFx: evt.target.value, errors: []})
+  updateSoundFx = (evt: InputEvent) => {
+    this.setState({soundFx: evt.currentTarget.value, errors: []})
   }
 
   setSoundFx = () => {
@@ -52,6 +69,7 @@ class AudioSettings extends Component {
   }
 
   play = () => {
+    // $FlowFixMe
     const audio = new Audio(this.state.soundFx)
     this.setState({audio, errors: [], playing: true})
     audio.addEventListener('ended', this.audioStopped)
@@ -107,13 +125,6 @@ class AudioSettings extends Component {
       </Container>
     )
   }
-}
-
-AudioSettings.propTypes = {
-  playBrokenBuildSoundFx: PropTypes.bool.isRequired,
-  brokenBuildSoundFx: PropTypes.string,
-  setPlayBrokenBuildSoundFx: PropTypes.func.isRequired,
-  setBrokenBuildSoundFx: PropTypes.func.isRequired
 }
 
 export default AudioSettings

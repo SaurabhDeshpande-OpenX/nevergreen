@@ -1,9 +1,14 @@
-import React, {Component} from 'react'
-import PropTypes from 'prop-types'
+// @flow
+
+import * as React from 'react'
 import _ from 'lodash'
 import styles from './external-link.scss'
 
-class ExternalLink extends Component {
+type Props = {
+  children: React.Node
+}
+
+class ExternalLink extends React.Component<Props> {
   render() {
     const aProps = _.omit(this.props, ['children', 'target', 'rel'])
 
@@ -14,10 +19,6 @@ class ExternalLink extends Component {
       </a>
     )
   }
-}
-
-ExternalLink.propTypes = {
-  children: PropTypes.node.isRequired
 }
 
 export default ExternalLink

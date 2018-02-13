@@ -1,15 +1,18 @@
+// @flow
+
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {toJS} from '../common/ImmutableToJs'
 import {fetchInteresting} from '../actions/MonitorActionCreators'
 import {requestFullScreen} from '../actions/NevergreenActionCreators'
 import Monitor from './Monitor'
+import type {Store} from '../Types'
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({fetchInteresting, requestFullScreen}, dispatch)
 }
 
-function mapStateToProps(store) {
+function mapStateToProps(store: Store) {
   const settings = store.get('audioVisual')
   const interesting = store.get('interesting')
 

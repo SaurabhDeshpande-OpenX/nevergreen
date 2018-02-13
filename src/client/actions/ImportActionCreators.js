@@ -1,4 +1,6 @@
-import Immutable from 'immutable'
+// @flow
+
+import * as Immutable from 'immutable'
 import _ from 'lodash'
 import {filter, validate} from '../common/repo/Data'
 import {fromJson} from '../common/Json'
@@ -8,18 +10,19 @@ import {getGist, getTruncatedFile} from '../common/gateways/GitHubGateway'
 import {gitHubSetDescription} from './GitHubActionCreators'
 import {isBlank} from '../common/Utils'
 import {IMPORT_ERROR, IMPORT_SUCCESS, IMPORTING} from './Actions'
+import type {Action, ImportErrorAction, ImportingAction, ThunkAction} from '../Types'
 
 const TEN_MEGS = 10485760
 
-export function importing() {
+export function importing(): ImportingAction {
   return {type: IMPORTING}
 }
 
-export function importError(errors) {
+export function importError(errors: string[]): ImportErrorAction {
   return {type: IMPORT_ERROR, errors: Immutable.List(errors)}
 }
 
-export function importSuccess(configuration) {
+export function importSuccess(configuration: Object): Action {
   return {
     type: IMPORT_SUCCESS,
     data: Immutable.fromJS(configuration),
@@ -27,7 +30,7 @@ export function importSuccess(configuration) {
   }
 }
 
-export function importData(jsonData) {
+export function importData(jsonData: string): ThunkAction {
   return function (dispatch) {
     dispatch(importing())
 
@@ -46,7 +49,7 @@ export function importData(jsonData) {
   }
 }
 
-export function restoreFromGitHub(gistId) {
+export function restoreFromGitHub(gistId: string): ThunkAction {
   return function (dispatch) {
     dispatch(importing())
 

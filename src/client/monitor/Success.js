@@ -1,11 +1,20 @@
+// @flow
+
 import React, {Component} from 'react'
-import PropTypes from 'prop-types'
 import Message from './SuccessMessage'
 import Image from './SuccessImage'
 import _ from 'lodash'
 
-class Success extends Component {
-  constructor(props) {
+type Props = {
+  messages: string[]
+}
+
+type State = {
+  message: string
+}
+
+class Success extends Component<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = {
       message: props.messages[Math.floor(Math.random() * props.messages.length)]
@@ -21,10 +30,6 @@ class Success extends Component {
       return <Message message={this.state.message}/>
     }
   }
-}
-
-Success.propTypes = {
-  messages: PropTypes.arrayOf(PropTypes.string).isRequired
 }
 
 export default Success

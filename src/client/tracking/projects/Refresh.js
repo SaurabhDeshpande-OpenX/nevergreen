@@ -1,5 +1,6 @@
+// @flow
+
 import React, {Component, Fragment} from 'react'
-import PropTypes from 'prop-types'
 import Shortcut from '../../common/Shortcut'
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now'
 import Timer from '../../common/Timer'
@@ -8,12 +9,23 @@ import {isBlank} from '../../common/Utils'
 
 const ONE_MINUTE = 60
 
-function lastFetched(timestamp) {
+function lastFetched(timestamp: ?string): string {
+  // $FlowFixMe
   return isBlank(timestamp) ? 'never' : `${distanceInWordsToNow(timestamp)} ago`
 }
 
-class Refresh extends Component {
-  constructor(props) {
+type Props = {
+  index: number,
+  timestamp?: string,
+  refreshTray: () => void
+}
+
+type State = {
+  lastFetched: string
+}
+
+class Refresh extends Component<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = {lastFetched: lastFetched(props.timestamp)}
   }
@@ -22,7 +34,7 @@ class Refresh extends Component {
     this.setState({lastFetched: lastFetched(this.props.timestamp)})
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     this.setState({lastFetched: lastFetched(nextProps.timestamp)})
   }
 
@@ -41,12 +53,6 @@ class Refresh extends Component {
       </Fragment>
     )
   }
-}
-
-Refresh.propTypes = {
-  index: PropTypes.number.isRequired,
-  timestamp: PropTypes.string,
-  refreshTray: PropTypes.func.isRequired
 }
 
 export default Refresh

@@ -1,3 +1,5 @@
+// @flow
+
 export const EXPORTING = 'EXPORTING'
 export const EXPORT_SUCCESS = 'EXPORT_SUCCESS'
 export const EXPORT_ERROR = 'EXPORT_ERROR'

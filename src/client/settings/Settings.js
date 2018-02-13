@@ -1,11 +1,28 @@
+// @flow
+
 import React, {Component} from 'react'
-import PropTypes from 'prop-types'
 import TimingSettings from './TimingSettings'
 import DisplaySettings from './DisplaySettings'
 import AudioSettings from './AudioSettings'
 import styles from './settings.scss'
 
-class Settings extends Component {
+type Props = {
+  showTrayName: boolean,
+  showBrokenBuildTime: boolean,
+  playBrokenBuildSoundFx: boolean,
+  showBuildLabel: boolean,
+  brokenBuildSoundFx?: string,
+  setShowBrokenBuildTime: () => void,
+  setShowTrayName: () => void,
+  setPlayBrokenBuildSoundFx: () => void,
+  setBrokenBuildSoundFx: () => void,
+  refreshTime: number,
+  setRefreshTime: () => void,
+  setShowBuildLabel: () => void,
+  validRefreshTimes: number[]
+}
+
+class Settings extends Component<Props> {
   render() {
     return (
       <section className={styles.settings}>
@@ -15,21 +32,6 @@ class Settings extends Component {
       </section>
     )
   }
-}
-
-Settings.propTypes = {
-  showTrayName: PropTypes.bool.isRequired,
-  showBrokenBuildTime: PropTypes.bool.isRequired,
-  playBrokenBuildSoundFx: PropTypes.bool.isRequired,
-  showBuildLabel: PropTypes.bool.isRequired,
-  brokenBuildSoundFx: PropTypes.string,
-  setShowBrokenBuildTime: PropTypes.func.isRequired,
-  setShowTrayName: PropTypes.func.isRequired,
-  setPlayBrokenBuildSoundFx: PropTypes.func.isRequired,
-  setBrokenBuildSoundFx: PropTypes.func.isRequired,
-  refreshTime: PropTypes.number.isRequired,
-  setRefreshTime: PropTypes.func.isRequired,
-  setShowBuildLabel: PropTypes.func.isRequired
 }
 
 export default Settings

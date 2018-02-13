@@ -1,5 +1,7 @@
-import React, {Component} from 'react'
-import PropTypes from 'prop-types'
+// @flow
+
+import type {TimeoutID} from 'flow-typed'
+import * as React from 'react'
 import Header from './header/Header'
 import Footer from './footer/Footer'
 import Mousetrap from 'mousetrap'
@@ -15,8 +17,30 @@ const ONE_SECONDS = 1000
 const THREE_SECONDS = 3 * 1000
 const TWENTY_FOUR_HOURS = 24 * 60 * 60
 
-class Nevergreen extends Component {
-  constructor(props) {
+type Props = {
+  children: React.Node,
+  loaded?: boolean,
+  notification: string,
+  initalise: () => void,
+  keyboardShortcut: (boolean) => void,
+  checkForNewVersion: (string, string) => void,
+  dismiss: () => void,
+  history: {
+    push: (string) => void
+  },
+  isFullScreen?: boolean,
+  fullScreenRequested?: boolean,
+  enableFullScreen: (?boolean) => void
+};
+
+type State = {
+  fullScreenTimer?: TimeoutID
+}
+
+class Nevergreen extends React.Component<Props, State> {
+  disableFullScreen: () => void
+
+  constructor(props: Props) {
     super(props)
     this.state = {}
     this.disableFullScreen = _.throttle(this.disableFullScreen, ONE_SECONDS, {trailing: false}).bind(this)
@@ -29,7 +53,11 @@ class Nevergreen extends Component {
   componentDidMount() {
     this.props.initalise()
 
-    Mousetrap.bindGlobal('esc', () => document.activeElement.blur())
+    Mousetrap.bindGlobal('esc', () => {
+      if (document.activeElement) {
+        document.activeElement.blur()
+      }
+    })
     Mousetrap.bind('?', () => {
       this.props.keyboardShortcut(true)
       this.props.history.push('help')
@@ -42,7 +70,7 @@ class Nevergreen extends Component {
     Mousetrap.unbind(['?', 'esc'])
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     if (nextProps.fullScreenRequested !== this.props.fullScreenRequested) {
       this.props.enableFullScreen(nextProps.fullScreenRequested)
     }
@@ -53,7 +81,8 @@ class Nevergreen extends Component {
       <main className={styles.nevergreen} onMouseMove={this.disableFullScreen}>
         <Timer onTrigger={this.checkVersion} interval={TWENTY_FOUR_HOURS}/>
         <Header fullScreen={this.props.isFullScreen}/>
-        <Notification notification={this.props.notification} dismiss={this.props.dismiss}
+        <Notification notification={this.props.notification}
+                      dismiss={this.props.dismiss}
                       fullScreen={this.props.isFullScreen}/>
         {this.props.loaded ? this.props.children : null}
         <Footer fullScreen={this.props.isFullScreen}/>
@@ -70,25 +99,6 @@ class Nevergreen extends Component {
       this.setState({fullScreenTimer: setTimeout(() => this.props.enableFullScreen(true), THREE_SECONDS)})
     }
   }
-}
-
-Nevergreen.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.element),
-    PropTypes.element
-  ]),
-  loaded: PropTypes.bool.isRequired,
-  notification: PropTypes.string,
-  initalise: PropTypes.func.isRequired,
-  keyboardShortcut: PropTypes.func.isRequired,
-  checkForNewVersion: PropTypes.func.isRequired,
-  dismiss: PropTypes.func.isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired
-  }).isRequired,
-  isFullScreen: PropTypes.bool,
-  fullScreenRequested: PropTypes.bool,
-  enableFullScreen: PropTypes.func.isRequired
 }
 
 export default Nevergreen

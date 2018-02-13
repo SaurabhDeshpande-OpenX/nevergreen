@@ -1,0 +1,23 @@
+[ignore]
+<PROJECT_ROOT>/node_modules/bourbon-neat/.*
+
+[include]
+<PROJECT_ROOT>/src/client/**/.*,js
+<PROJECT_ROOT>/test/client/**/.*.js
+
+[libs]
+
+[lints]
+
+[options]
+module.file_ext=.js
+module.file_ext=.scss
+module.file_ext=.txt
+module.file_ext=.png
+module.file_ext=.mp3
+module.name_mapper='.*(.txt)' -> 'string'
+module.name_mapper='.*(.png)' -> 'string'
+module.name_mapper='.*(.mp3)' -> 'string'
+module.name_mapper='.*(.scss)' -> '{}'
+
+[strict]

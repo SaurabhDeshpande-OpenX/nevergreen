@@ -1,9 +1,17 @@
+// @flow
+
 import React, {Component, Fragment} from 'react'
-import PropTypes from 'prop-types'
 import Clipboard from './Clipboard'
 import styles from './locally.scss'
 
-class Locally extends Component {
+type Props = {
+  loaded?: boolean,
+  configuration: string,
+  exportSuccess: (string[]) => void,
+  exportError: (string[]) => void
+}
+
+class Locally extends Component<Props> {
   copySuccess = () => {
     this.props.exportSuccess(['Successfully copied to clipboard'])
   }
@@ -31,13 +39,6 @@ class Locally extends Component {
       </Fragment>
     )
   }
-}
-
-Locally.propTypes = {
-  loaded: PropTypes.bool,
-  configuration: PropTypes.string.isRequired,
-  exportSuccess: PropTypes.func.isRequired,
-  exportError: PropTypes.func.isRequired
 }
 
 export default Locally

@@ -1,20 +1,30 @@
-import React, {Children, Component, Fragment} from 'react'
-import PropTypes from 'prop-types'
+// @flow
+
+import * as React from 'react'
 import styles from './tabs.scss'
 
-class Tabs extends Component {
-  constructor(props) {
+type Props = {
+  children: React.Node,
+  titles: string[]
+}
+
+type State = {
+  active: number
+}
+
+class Tabs extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = {active: 0}
   }
 
-  switchTabs = (index) => {
+  switchTabs = (index: number) => {
     this.setState({active: index})
   }
 
   render() {
     return (
-      <Fragment>
+      <React.Fragment>
         <div className={styles.tabs}>
           {this.props.titles.map((title, i) => {
             const isActive = i === this.state.active
@@ -30,16 +40,11 @@ class Tabs extends Component {
           })}
         </div>
         <div className={styles.contents}>
-          {Children.toArray(this.props.children)[this.state.active]}
+          {React.Children.toArray(this.props.children)[this.state.active]}
         </div>
-      </Fragment>
+      </React.Fragment>
     )
   }
-}
-
-Tabs.propTypes = {
-  children: PropTypes.arrayOf(PropTypes.element).isRequired,
-  titles: PropTypes.arrayOf(PropTypes.string).isRequired
 }
 
 export default Tabs

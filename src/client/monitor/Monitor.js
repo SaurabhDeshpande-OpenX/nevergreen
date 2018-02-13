@@ -1,5 +1,6 @@
+// @flow
+
 import React, {Component} from 'react'
-import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import InterestingProjects from './InterestingProjects'
 import Success from './Success'
@@ -7,8 +8,27 @@ import Loading from '../common/loading/Loading'
 import styles from './monitor.scss'
 import Timer from '../common/Timer'
 import _ from 'lodash'
+import type {Project, Tray} from '../Types'
 
-class Monitor extends Component {
+type Props = {
+  loaded?: boolean,
+  errors: string[],
+  trays: Tray[],
+  selected: string[],
+  projects: Project[],
+  showBrokenBuildTimers?: boolean,
+  showTrayName?: boolean,
+  showBuildLabel?: boolean,
+  playBrokenBuildSounds?: boolean,
+  brokenBuildFx?: string,
+  messages: string[],
+  fetchInteresting: (Tray[], string[]) => void,
+  refreshTime: number,
+  requestFullScreen: (boolean) => void,
+  isFullScreen: boolean
+}
+
+class Monitor extends Component<Props> {
   fetch = () => {
     this.props.fetchInteresting(this.props.trays, this.props.selected)
   }
@@ -41,24 +61,6 @@ class Monitor extends Component {
       </div>
     )
   }
-}
-
-Monitor.propTypes = {
-  loaded: PropTypes.bool.isRequired,
-  errors: PropTypes.arrayOf(PropTypes.string),
-  trays: PropTypes.arrayOf(PropTypes.object).isRequired,
-  selected: PropTypes.object.isRequired,
-  projects: PropTypes.arrayOf(PropTypes.object),
-  showBrokenBuildTimers: PropTypes.bool,
-  showTrayName: PropTypes.bool,
-  showBrokenBuildLabel: PropTypes.bool,
-  playBrokenBuildSounds: PropTypes.bool,
-  brokenBuildFx: PropTypes.string,
-  messages: PropTypes.arrayOf(PropTypes.string).isRequired,
-  fetchInteresting: PropTypes.func.isRequired,
-  refreshTime: PropTypes.number.isRequired,
-  requestFullScreen: PropTypes.func.isRequired,
-  isFullScreen: PropTypes.bool
 }
 
 export default Monitor

@@ -1,5 +1,10 @@
-import Immutable from 'immutable'
+// @flow
+
+import * as Immutable from 'immutable'
 import {FULL_SCREEN, INITIALISED, INITIALISING, REQUEST_FULL_SCREEN} from '../actions/Actions'
+import type {Action} from '../Types'
+
+type State = Immutable.Map<string, mixed>
 
 const DEFAULT_STATE = Immutable.Map({
   loaded: false,
@@ -7,7 +12,7 @@ const DEFAULT_STATE = Immutable.Map({
   fullScreenRequested: false
 })
 
-export function reduce(state = DEFAULT_STATE, action) {
+export function reduce(state: State = DEFAULT_STATE, action: Action) {
   switch (action.type) {
     case INITIALISING:
       return DEFAULT_STATE

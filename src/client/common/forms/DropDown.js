@@ -1,10 +1,17 @@
-import React, {Component} from 'react'
-import PropTypes from 'prop-types'
+// @flow
+
+import * as React from 'react'
 import _ from 'lodash'
 import classNames from 'classnames'
 import styles from './drop-down.scss'
 
-class DropDown extends Component {
+type Props = {
+  children: React.Node,
+  title?: string,
+  className?: string
+}
+
+class DropDown extends React.Component<Props> {
   render() {
     const inputProps = _.omit(this.props, ['children', 'title', 'className'])
     const labelClasses = classNames(styles.dropDown, this.props.className)
@@ -18,15 +25,6 @@ class DropDown extends Component {
       </label>
     )
   }
-}
-
-DropDown.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.element),
-    PropTypes.element
-  ]).isRequired,
-  title: PropTypes.string,
-  className: PropTypes.string
 }
 
 export default DropDown

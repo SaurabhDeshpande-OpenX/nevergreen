@@ -1,8 +1,21 @@
+// @flow
+
 import {Component} from 'react'
-import PropTypes from 'prop-types'
 import Clipboard from 'clipboard'
 
-function createClipboard(elementSelector, onSuccess, onError) {
+type Callback = (mixed) => void
+
+type Props = {
+  elementSelector: string,
+  onSuccess: () => void,
+  onError: () => void
+}
+
+type State = {
+  clipboard: ?Clipboard
+}
+
+function createClipboard(elementSelector: string, onSuccess: Callback, onError: Callback): Clipboard {
   const clipboard = new Clipboard(elementSelector)
 
   clipboard.on('error', (evt) => onError(evt))
@@ -15,13 +28,13 @@ function createClipboard(elementSelector, onSuccess, onError) {
   return clipboard
 }
 
-class ClipboardComponent extends Component {
-  constructor(props) {
+class ClipboardComponent extends Component<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = {clipboard: null}
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     if (this.state.clipboard) {
       this.state.clipboard.destroy()
     }
@@ -41,12 +54,6 @@ class ClipboardComponent extends Component {
   render() {
     return null
   }
-}
-
-ClipboardComponent.propTypes = {
-  elementSelector: PropTypes.string.isRequired,
-  onSuccess: PropTypes.func.isRequired,
-  onError: PropTypes.func.isRequired
 }
 
 export default ClipboardComponent

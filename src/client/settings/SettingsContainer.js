@@ -1,10 +1,18 @@
+// @flow
+
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {
-  setBrokenBuildSoundFx, setPlayBrokenBuildSoundFx, setRefreshTime, setShowBrokenBuildTime, setShowBuildLabel,
-  setShowTrayName, VALID_REFRESH_TIMES
+  setBrokenBuildSoundFx,
+  setPlayBrokenBuildSoundFx,
+  setRefreshTime,
+  setShowBrokenBuildTime,
+  setShowBuildLabel,
+  setShowTrayName,
+  VALID_REFRESH_TIMES
 } from '../actions/SettingsActionCreators'
 import Settings from './Settings'
+import type {Store} from '../Types'
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
@@ -17,7 +25,7 @@ function mapDispatchToProps(dispatch) {
   }, dispatch)
 }
 
-function mapStateToProps(store) {
+function mapStateToProps(store: Store) {
   const audioVisual = store.get('audioVisual')
   return {
     showTrayName: audioVisual.get('showTrayName'),

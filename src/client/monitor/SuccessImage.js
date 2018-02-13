@@ -1,8 +1,13 @@
+// @flow
+
 import React, {Component} from 'react'
-import PropTypes from 'prop-types'
 import styles from './success-image.scss'
 
-class SuccessImage extends Component {
+type Props = {
+  url: string
+}
+
+class SuccessImage extends Component<Props> {
   render() {
     return (
       <div id='success-image'>
@@ -10,10 +15,6 @@ class SuccessImage extends Component {
       </div>
     )
   }
-}
-
-SuccessImage.propTypes = {
-  url: PropTypes.string.isRequired
 }
 
 export default SuccessImage

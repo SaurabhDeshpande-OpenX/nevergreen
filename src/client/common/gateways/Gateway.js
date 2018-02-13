@@ -1,6 +1,13 @@
-import request from 'superagent'
+// @flow
+
+import superagent from 'superagent'
 import * as log from '../Logger'
 import _ from 'lodash'
+import type {HttpRequest, HttpResponse} from '../../Types'
+
+type Headers = {
+  [string]: string
+}
 
 const THIRTY_SECONDS = 1000 * 30
 const THREE_MINUTES = 1000 * 60 * 60 * 3
@@ -10,8 +17,8 @@ const TIMEOUT = {
 }
 const ACCEPT_HEADER = 'application/json; charset=utf-8'
 
-export function post(url, data, headers = {}) {
-  return request
+export function post<T>(url: string, data: mixed, headers: Headers = {}): HttpRequest<T> {
+  return superagent
     .post(url)
     .send(data)
     .accept(ACCEPT_HEADER)
@@ -20,8 +27,8 @@ export function post(url, data, headers = {}) {
     .timeout(TIMEOUT)
 }
 
-export function patch(url, data, headers = {}) {
-  return request
+export function patch<T>(url: string, data: mixed, headers: Headers = {}): HttpRequest<T> {
+  return superagent
     .patch(url)
     .send(data)
     .accept(ACCEPT_HEADER)
@@ -30,17 +37,17 @@ export function patch(url, data, headers = {}) {
     .timeout(TIMEOUT)
 }
 
-export function get(url, headers = {}) {
-  return request
+export function get<T>(url: string, headers: Headers = {}): HttpRequest<T> {
+  return superagent
     .get(url)
     .accept(ACCEPT_HEADER)
     .set(headers)
     .timeout(TIMEOUT)
 }
 
-export function send(request) {
-  return request.then((res) => {
-    return res.body || res.text
+export function send<T>(request: HttpRequest<T>): Promise<T> {
+  return request.then((res: HttpResponse<T>): Promise<T> => {
+    return res.body
   }).catch((err) => {
     log.error('An unhandled exception was thrown from the server', err)
     const status = err.status || 0
@@ -49,6 +56,6 @@ export function send(request) {
   })
 }
 
-export function fakeResponse(body) {
+export function fakeResponse<T>(body: T): Promise<HttpResponse<T>> {
   return Promise.resolve({body})
 }

@@ -1,18 +1,26 @@
+// @flow
+
 import React, {Component} from 'react'
 import styles from './font-metrics.scss'
 
 const fontMeasureSize = 100
 
-class FontMetrics extends Component {
-  constructor(props) {
+class FontMetrics extends Component<any> {
+  measure: ?HTMLElement
+  width: number
+  height: number
+
+  constructor(props: any) {
     super(props)
     this.width = 0
     this.height = 0
   }
 
   componentDidMount() {
-    this.width = this.measure.offsetWidth / fontMeasureSize
-    this.height = this.measure.offsetHeight / fontMeasureSize
+    if (this.measure) {
+      this.width = this.measure.offsetWidth / fontMeasureSize
+      this.height = this.measure.offsetHeight / fontMeasureSize
+    }
   }
 
   render() {

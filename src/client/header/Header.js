@@ -1,5 +1,6 @@
+// @flow
+
 import React, {Component} from 'react'
-import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import styles from './header.scss'
 import logo from './buildcanaries-logo.png'
@@ -15,8 +16,16 @@ const MENU_ITEMS = [
   {id: 'help', title: 'help', shortcuts: ['h', '6']}
 ]
 
-class Header extends Component {
-  constructor(props) {
+type Props = {
+  fullScreen?: boolean
+}
+
+type State = {
+  menuVisible: boolean
+}
+
+class Header extends Component<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = {menuVisible: false}
   }
@@ -75,10 +84,6 @@ class Header extends Component {
       </header>
     )
   }
-}
-
-Header.propTypes = {
-  fullScreen: PropTypes.bool
 }
 
 export default Header

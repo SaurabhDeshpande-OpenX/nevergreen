@@ -1,9 +1,14 @@
+// @flow
+
 import React, {Component} from 'react'
-import PropTypes from 'prop-types'
 import Container from '../common/container/Container'
 import styles from './schema.scss'
 
-class Schema extends Component {
+type Props = {
+  schema: string
+}
+
+class Schema extends Component<Props> {
   render() {
     return (
       <Container title='schema' hidden={true} className={styles.container}>
@@ -11,10 +16,6 @@ class Schema extends Component {
       </Container>
     )
   }
-}
-
-Schema.propTypes = {
-  schema: PropTypes.string.isRequired
 }
 
 export default Schema

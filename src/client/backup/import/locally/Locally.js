@@ -1,17 +1,28 @@
-import React, {Component, Fragment} from 'react'
-import PropTypes from 'prop-types'
+// @flow
+
+import * as React from 'react'
 import styles from './locally.scss'
+import type {InputEvent} from '../../../Types'
+
+type Props = {
+  loaded?: boolean,
+  importData: (string) => void
+}
+
+type State = {
+  data: string
+}
 
 const PLACEHOLDER = 'paste exported configuration here and press import'
 
-class Locally extends Component {
-  constructor(props) {
+class Locally extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = {data: ''}
   }
 
-  updateData = (evt) => {
-    this.setState({data: evt.target.value})
+  updateData = (evt: InputEvent) => {
+    this.setState({data: evt.currentTarget.value})
   }
 
   doImport = () => {
@@ -21,7 +32,7 @@ class Locally extends Component {
   render() {
 
     return (
-      <Fragment>
+      <React.Fragment>
         <label>
           <span className={styles.label}>configuration to import</span>
           <textarea className={styles.data}
@@ -32,14 +43,9 @@ class Locally extends Component {
                     data-locator='import-data'/>
         </label>
         <button className={styles.import} onClick={this.doImport} data-locator='import'>import</button>
-      </Fragment>
+      </React.Fragment>
     )
   }
-}
-
-Locally.propTypes = {
-  loaded: PropTypes.bool,
-  importData: PropTypes.func.isRequired
 }
 
 export default Locally

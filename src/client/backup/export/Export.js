@@ -1,12 +1,20 @@
+// @flow
+
 import React, {Component} from 'react'
-import PropTypes from 'prop-types'
 import Container from '../../common/container/Container'
 import Messages from '../../common/messages/Messages'
 import LocallyContainer from './locally/LocallyContainer'
 import GitHubContainer from './github/GitHubContainer'
 import Tabs from '../../common/tabs/Tabs'
 
-class Export extends Component {
+type Props = {
+  configuration: string,
+  loaded?: boolean,
+  infos: string[],
+  errors: string[]
+}
+
+class Export extends Component<Props> {
   render() {
     return (
       <Container title='export'>
@@ -19,13 +27,6 @@ class Export extends Component {
       </Container>
     )
   }
-}
-
-Export.propTypes = {
-  configuration: PropTypes.string,
-  loaded: PropTypes.bool,
-  infos: PropTypes.arrayOf(PropTypes.string),
-  errors: PropTypes.arrayOf(PropTypes.string)
 }
 
 export default Export

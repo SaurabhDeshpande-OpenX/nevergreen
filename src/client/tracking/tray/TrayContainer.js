@@ -1,7 +1,15 @@
+// @flow
+
 import {connect} from 'react-redux'
 import Tray from './Tray'
+import type {Store} from '../../Types'
 
-function mapStateToProps(store, ownProps) {
+type Props = {
+  trayId: string,
+  index: number
+}
+
+function mapStateToProps(store: Store, ownProps: Props): Object {
   const tray = store.getIn(['trays', ownProps.trayId])
   return {
     trayId: ownProps.trayId,

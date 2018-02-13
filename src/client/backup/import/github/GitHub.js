@@ -1,16 +1,29 @@
-import React, {Component, Fragment} from 'react'
-import PropTypes from 'prop-types'
+// @flow
+
+import * as React from 'react'
 import Input from '../../../common/forms/Input'
 import styles from './github.scss'
+import type {InputEvent} from '../../../Types'
 
-class GitHub extends Component {
-  constructor(props) {
+type Props = {
+  loaded?: boolean,
+  restoreFromGitHub: (string) => void,
+  gitHubSetGistId: (string) => void,
+  gistId: string
+}
+
+type State = {
+  gistId: string
+}
+
+class GitHub extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = {gistId: props.gistId}
   }
 
-  gistIdChanged = (evt) => {
-    this.setState({gistId: evt.target.value})
+  gistIdChanged = (evt: InputEvent) => {
+    this.setState({gistId: evt.currentTarget.value})
   }
 
   setGistId = () => {
@@ -21,7 +34,7 @@ class GitHub extends Component {
     this.props.restoreFromGitHub(this.state.gistId)
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     this.setState({gistId: nextProps.gistId})
   }
 
@@ -29,7 +42,7 @@ class GitHub extends Component {
     const disabled = !this.props.loaded
 
     return (
-      <Fragment>
+      <React.Fragment>
         <Input className={styles.gistId}
                value={this.state.gistId}
                onChange={this.gistIdChanged}
@@ -38,16 +51,9 @@ class GitHub extends Component {
           gist ID
         </Input>
         <button className={styles.import} onClick={this.restore} disabled={disabled}>import</button>
-      </Fragment>
+      </React.Fragment>
     )
   }
-}
-
-GitHub.propTypes = {
-  loaded: PropTypes.bool,
-  restoreFromGitHub: PropTypes.func.isRequired,
-  gitHubSetGistId: PropTypes.func.isRequired,
-  gistId: PropTypes.string.isRequired
 }
 
 export default GitHub

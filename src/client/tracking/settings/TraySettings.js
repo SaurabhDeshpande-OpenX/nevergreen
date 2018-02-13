@@ -1,12 +1,42 @@
+// @flow
+
 import React, {Component} from 'react'
-import PropTypes from 'prop-types'
 import Input from '../../common/forms/Input'
 import DropDown from '../../common/forms/DropDown'
 import {generateRandomName} from '../../common/project/Name'
 import styles from './tray-settings.scss'
+import type {HttpRequest, InputEvent} from '../../Types'
 
-class TraySettings extends Component {
-  constructor(props) {
+type Props = {
+  trayId: string,
+  name?: string,
+  url: string,
+  username?: string,
+  password?: string,
+  serverType?: string,
+  removeTray: (string, ?HttpRequest) => void,
+  setTrayName: (string, ?string) => void,
+  setServerType: (string, ?string) => void,
+  setTrayUsername: (string, ?string) => void,
+  setTrayUrl: (string, ?string) => void,
+  updateTrayId: (Object, string, ?HttpRequest) => void,
+  encryptPassword: (string, ?string, ?HttpRequest) => void,
+  refreshTray: (Object, ?HttpRequest) => void,
+  pendingRequest?: HttpRequest
+}
+
+type State = {
+  newName?: string,
+  newUsername?: string,
+  newPassword?: string,
+  updatingPassword: boolean,
+  credentialsChanged: boolean,
+  urlChanged: boolean,
+  newUrl: string
+}
+
+class TraySettings extends Component<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = {
       newName: props.name,
@@ -19,8 +49,8 @@ class TraySettings extends Component {
     }
   }
 
-  nameChanged = (evt) => {
-    this.setState({newName: evt.target.value})
+  nameChanged = (evt: InputEvent) => {
+    this.setState({newName: evt.currentTarget.value})
   }
 
   setName = () => {
@@ -31,12 +61,12 @@ class TraySettings extends Component {
     this.setState({newName: generateRandomName()}, () => this.setName())
   }
 
-  serverTypeChange = (evt) => {
-    this.props.setServerType(this.props.trayId, evt.target.value)
+  serverTypeChange = (evt: InputEvent) => {
+    this.props.setServerType(this.props.trayId, evt.currentTarget.value)
   }
 
-  usernameChanged = (evt) => {
-    this.setState({newUsername: evt.target.value})
+  usernameChanged = (evt: InputEvent) => {
+    this.setState({newUsername: evt.currentTarget.value})
   }
 
   setUsername = () => {
@@ -44,8 +74,8 @@ class TraySettings extends Component {
     this.props.setTrayUsername(this.props.trayId, this.state.newUsername)
   }
 
-  passwordChanged = (evt) => {
-    this.setState({newPassword: evt.target.value})
+  passwordChanged = (evt: InputEvent) => {
+    this.setState({newPassword: evt.currentTarget.value})
   }
 
   deleteTray = () => {
@@ -65,8 +95,8 @@ class TraySettings extends Component {
     this.setState({updatingPassword: false, newPassword: '', credentialsChanged: true})
   }
 
-  urlChanged = (evt) => {
-    this.setState({newUrl: evt.target.value})
+  urlChanged = (evt: InputEvent) => {
+    this.setState({newUrl: evt.currentTarget.value})
   }
 
   setUrl = () => {
@@ -157,24 +187,6 @@ class TraySettings extends Component {
       </section>
     )
   }
-}
-
-TraySettings.propTypes = {
-  trayId: PropTypes.string.isRequired,
-  name: PropTypes.string,
-  url: PropTypes.string.isRequired,
-  username: PropTypes.string,
-  password: PropTypes.string,
-  serverType: PropTypes.string,
-  removeTray: PropTypes.func.isRequired,
-  setTrayName: PropTypes.func.isRequired,
-  setServerType: PropTypes.func.isRequired,
-  setTrayUsername: PropTypes.func.isRequired,
-  setTrayUrl: PropTypes.func.isRequired,
-  updateTrayId: PropTypes.func.isRequired,
-  encryptPassword: PropTypes.func.isRequired,
-  refreshTray: PropTypes.func.isRequired,
-  pendingRequest: PropTypes.object
 }
 
 export default TraySettings

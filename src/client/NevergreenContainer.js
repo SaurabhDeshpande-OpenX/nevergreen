@@ -1,3 +1,5 @@
+// @flow
+
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {enableFullScreen, initalise} from './actions/NevergreenActionCreators'
@@ -5,6 +7,7 @@ import {checkForNewVersion, dismiss} from './actions/NotificationActionCreators'
 import {keyboardShortcut} from './actions/ShortcutActionCreators'
 import Nevergreen from './Nevergreen'
 import {withRouter} from 'react-router-dom'
+import type {Store} from './Types'
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
@@ -16,7 +19,7 @@ function mapDispatchToProps(dispatch) {
   }, dispatch)
 }
 
-function mapStateToProps(store) {
+function mapStateToProps(store: Store) {
   return {
     loaded: store.getIn(['nevergreen', 'loaded']),
     notification: store.get('notification'),
