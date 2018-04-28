@@ -8,7 +8,7 @@ import {randomDateInPast} from '../common/DateTime'
 import {generateRandomName} from '../domain/Tray'
 import _ from 'lodash'
 import styles from './display-settings.scss'
-import {PROGNOSIS_HEALTHY_BUILDING, PROGNOSIS_SICK, PROGNOSIS_SICK_BUILDING, PROGNOSIS_UNKNOWN} from '../domain/Project'
+import {PROGNOSIS_HEALTHY_BUILDING, PROGNOSIS_HEALTHY, PROGNOSIS_SICK, PROGNOSIS_SICK_BUILDING, PROGNOSIS_UNKNOWN} from '../domain/Project'
 
 function randomBuildLabel() {
   return `${_.random(1, 9999)}`
@@ -84,6 +84,12 @@ class DisplaySettings extends Component {
               <InterestingProject trayName={this.state.trayName}
                                   name='sick building'
                                   prognosis={PROGNOSIS_SICK_BUILDING}
+                                  thisBuildTime={this.state.thisBuildTime}
+                                  showBuildTimers={this.props.showBuildTime}
+                                  showTrayName={this.props.showTrayName}/>
+               <InterestingProject trayName={this.state.trayName}
+                                  name='healthy'
+                                  prognosis={PROGNOSIS_HEALTHY}
                                   thisBuildTime={this.state.thisBuildTime}
                                   showBuildTimers={this.props.showBuildTime}
                                   showTrayName={this.props.showTrayName}/>

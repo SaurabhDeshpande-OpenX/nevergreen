@@ -78,7 +78,7 @@
     (let [projects (fetch-tray tray)]
       (if (every? is-error? projects)
         (add-tray-id (:tray-id tray) projects)
-        (->> (filtering/interesting projects)
+        (->> (filtering/by-prognosis [:sick :healthy :healthy-building :sick-building :unknown] projects)
              (filter-by-ids (:included tray))
              (add-tray-id (:tray-id tray))
              (add-tray-url (:url tray))

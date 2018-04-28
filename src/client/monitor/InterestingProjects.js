@@ -10,7 +10,8 @@ import {
   PROGNOSIS_HEALTHY_BUILDING,
   PROGNOSIS_SICK,
   PROGNOSIS_SICK_BUILDING,
-  PROGNOSIS_UNKNOWN
+  PROGNOSIS_UNKNOWN,
+  PROGNOSIS_HEALTHY
 } from '../domain/Project'
 
 class InterestingProjects extends Component {
@@ -63,6 +64,7 @@ InterestingProjects.propTypes = {
     trayId: PropTypes.string.isRequired,
     prognosis: PropTypes.oneOf([
       PROGNOSIS_SICK,
+      PROGNOSIS_HEALTHY,
       PROGNOSIS_HEALTHY_BUILDING,
       PROGNOSIS_SICK_BUILDING,
       PROGNOSIS_UNKNOWN
