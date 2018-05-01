@@ -28,14 +28,23 @@ class InterestingProject extends Component {
     const stage = !isBlank(this.props.stage) &&
       <div className={styles.stage} data-locator='project-stage'> {this.props.stage}</div>
 
-    const timeBroken = this.props.showBrokenBuildTimers && sick &&
+    const timeSinceLastBuild = 
       <div className={styles.duration}>
         {' '}
         <Duration timestamp={this.props.lastBuildTime}
-                  fullDescriptionPrefix=' time broken '
-                  data-locator='time-broken'
+                  fullDescriptionPrefix=' time since last build'
+                  data-locator='time-since-last-build'
                   abbreviate/>
-      </div>
+      </div>  
+       
+    // const timeBroken = this.props.showBrokenBuildTimers && sick &&
+    //   <div className={styles.duration}>
+    //     {' '}
+    //     <Duration timestamp={this.props.lastBuildTime}
+    //               fullDescriptionPrefix=' time broken '
+    //               data-locator='time-broken'
+    //               abbreviate/>
+    //   </div>
 
     const timeBuilding = this.props.showBuildTimers && building &&
       <div className={styles.duration}>
@@ -60,7 +69,7 @@ class InterestingProject extends Component {
           <div className={styles.projectName} data-locator='project-name'>{this.props.name}</div>
           {stage}
           <VisuallyHidden data-locator='prognosis'> prognosis {this.props.prognosis}</VisuallyHidden>
-          {timeBroken}
+          {timeSinceLastBuild}
           {timeBuilding}
           {buildLabel}
         </div>
