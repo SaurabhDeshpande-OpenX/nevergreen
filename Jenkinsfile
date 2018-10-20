@@ -25,4 +25,7 @@ void whateverFunction() {
     sh 'ls /'
     currentBuild.result = 'SUCCESS'
     echo "RESULT: ${currentBuild.result}"
+  if (currentBuild.result == 'SUCCESS'){
+    echo "Gradual Success"
+  }
 }
