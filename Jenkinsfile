@@ -3,7 +3,6 @@ pipeline {
   agent none
   triggers {
         cron('*/5 * * * *')
-        currentBuild.result = 'SUCCESS'
     }
   stages {
     stage('Stage1') {
