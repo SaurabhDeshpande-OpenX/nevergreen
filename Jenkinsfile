@@ -21,6 +21,16 @@ pipeline {
             sh 'env | sort'
           }
         }
+        stage('Stage3') {
+          agent any
+          when {
+               expression{ oncePerDaybuildTriggered() }
+          }
+          steps {
+            sh 'sleep 3'
+            sh 'env | sort'
+          }
+        }
       }
     }
   }
@@ -37,6 +47,19 @@ def whateverFunction() {
 def triggerBuild(){
     echo "BUILD No: ${currentBuild.number}"
   if (currentBuild.number % 2){
+    echo "trigger Success"
+    return true
+  }
+  else{
+    echo "trigger Failure"
+    return false
+  }
+}
+def oncePerDaybuildTriggered(){
+  def now = new Date()
+  println now.format("yyMMdd.HHmm", TimeZone.getTimeZone('UTC'))
+  currentHour = 10
+  if (currentHour == 10){
     echo "trigger Success"
     return true
   }
