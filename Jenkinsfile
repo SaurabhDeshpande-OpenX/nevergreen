@@ -6,13 +6,13 @@ pipeline {
         stage('Stage1') {
           agent any
           steps {
-            sh 'sleep 10'
+            sh 'sleep 2'
           }
         }
         stage('Stage2') {
           agent any
           steps {
-            sh 'sleep 20'
+            sh 'sleep 3'
           }
         }
       }
