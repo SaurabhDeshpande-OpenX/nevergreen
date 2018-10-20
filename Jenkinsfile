@@ -14,8 +14,7 @@ pipeline {
           agent any
           steps {
             sh 'sleep 3'
-            echo 'buildNo'
-            sh 'BUILD_NUMBER'
+            sh 'env | sort'
           }
         }
       }
