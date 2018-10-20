@@ -30,6 +30,6 @@ def whateverFunction() {
     echo "RESULT: ${currentBuild.result}"
   if (currentBuild.result == 'SUCCESS'){
     echo "Gradual Success"
-    return true
+    return false
   }
 }
