@@ -5,6 +5,9 @@ pipeline {
       parallel {
         stage('Stage1') {
           agent any
+          when {
+               expression{ whateverFunction() }
+          }
           steps {
             sh 'sleep 2'
             whateverFunction()
@@ -21,7 +24,7 @@ pipeline {
     }
   }
 }
-boolean whateverFunction() {
+def whateverFunction() {
     sh 'ls /'
     currentBuild.result = 'SUCCESS'
     echo "RESULT: ${currentBuild.result}"
