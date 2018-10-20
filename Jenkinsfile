@@ -7,6 +7,7 @@ pipeline {
           agent any
           steps {
             sh 'sleep 2'
+            whateverFunction()
           }
         }
         stage('Stage2') {
@@ -18,4 +19,7 @@ pipeline {
       }
     }
   }
+}
+void whateverFunction() {
+    sh 'ls /'
 }
