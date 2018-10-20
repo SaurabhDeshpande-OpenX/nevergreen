@@ -8,6 +8,7 @@ pipeline {
           steps {
             sh 'sleep 2'
             whateverFunction()
+            echo "RESULT: ${currentBuild.result}"
           }
         }
         stage('Stage2') {
