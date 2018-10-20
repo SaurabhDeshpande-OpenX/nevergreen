@@ -14,6 +14,8 @@ pipeline {
           agent any
           steps {
             sh 'sleep 3'
+            echo 'buildNo'
+            echo currentBuild.number
           }
         }
       }
