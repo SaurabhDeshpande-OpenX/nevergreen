@@ -59,11 +59,12 @@ def oncePerDaybuildTriggered(){
   def now = new Date()
   println now.format("HH", TimeZone.getTimeZone('UTC'))
   currentHour = 10
+  println currentHour
   //causes = currentBuild.rawBuild.getCauses()
   
-  if (now == "18"){
+  if (now == 18){
     echo "trigger Success"
-    println currentHour
+    
     return true
   }
   else{
