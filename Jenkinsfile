@@ -8,6 +8,7 @@ pipeline {
           steps {
             sh 'sleep 2'
             whateverFunction()
+            currentBuild.result = 'SUCCESS'
             echo "RESULT: ${currentBuild.result}"
           }
         }
