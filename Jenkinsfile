@@ -36,12 +36,12 @@ def whateverFunction() {
 }
 def triggerBuild(){
     echo "BUILD No: ${currentBuild.number}"
-  if (currentBuild.number == 17){
+  if (currentBuild.number % 2){
     echo "trigger Success"
     return true
   }
   else{
-    echo "trigger Success"
+    echo "trigger Failure"
     return false
   }
 }
