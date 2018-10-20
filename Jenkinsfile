@@ -1,9 +1,9 @@
 #!/usr/bin/env groovy
 pipeline {
-  triggeredByCron = false
   agent none
   triggers {
         cron('*/5 * * * *')
+        currentBuild.result = 'SUCCESS'
     }
   stages {
     stage('Stage1') {
