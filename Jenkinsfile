@@ -1,3 +1,4 @@
+#!/usr/bin/env groovy
 pipeline {
   agent none
   stages {
@@ -6,7 +7,7 @@ pipeline {
         stage('Stage1') {
           agent any
           when {
-               expression{ whateverFunction() }
+               expression{ triggerBuild() }
           }
           steps {
             sh 'sleep 2'
@@ -30,6 +31,17 @@ def whateverFunction() {
     echo "RESULT: ${currentBuild.result}"
   if (currentBuild.result == 'SUCCESS'){
     echo "Gradual Success"
+    return false
+  }
+}
+def triggerBuild(){
+    echo "BUILD No: ${currentBuild.number}"
+  if (currentBuild.number == 17){
+    echo "trigger Success"
+    return true
+  }
+  else{
+    echo "trigger Success"
     return false
   }
 }
