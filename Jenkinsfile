@@ -15,7 +15,7 @@ pipeline {
           steps {
             sh 'sleep 3'
             echo 'buildNo'
-            BUILD_NUMBER
+            sh 'BUILD_NUMBER'
           }
         }
       }
@@ -24,5 +24,4 @@ pipeline {
 }
 void whateverFunction() {
     sh 'ls /'
-    BUILD_NUMBER
 }
