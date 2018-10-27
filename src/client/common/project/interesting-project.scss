@@ -25,6 +25,11 @@
   color: $white;
 }
 
+.healthy {
+  background-color: $healthy;
+  color: $white;
+}
+
 .unknown {
   background-color: $mid-grey;
   color: $off-black;
@@ -41,7 +46,7 @@
   display: inline;
 }
 
-.timeBroken {
+.timeSinceLastBuild {
   display: inline;
   font-style: italic;
   opacity: 0.5;
@@ -56,4 +61,9 @@
   display: inline;
   font-style: italic;
   opacity: 0.5;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
 }

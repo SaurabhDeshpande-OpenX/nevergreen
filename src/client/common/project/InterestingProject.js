@@ -7,6 +7,7 @@ import {
   formatBuildLabel,
   isBuilding,
   isSick,
+  PROGNOSIS_HEALTHY,
   PROGNOSIS_HEALTHY_BUILDING,
   PROGNOSIS_SICK,
   PROGNOSIS_SICK_BUILDING,
@@ -18,7 +19,7 @@ import Duration from '../Duration'
 class InterestingProject extends Component {
   render() {
     const classes = classNames(styles.interestingProject, styles[this.props.prognosis])
-
+    
     const sick = isSick(this.props.prognosis)
     const building = isBuilding(this.props.prognosis)
 
@@ -27,16 +28,16 @@ class InterestingProject extends Component {
 
     const stage = !isBlank(this.props.stage) &&
       <div className={styles.stage} data-locator='project-stage'> {this.props.stage}</div>
-
-    const timeBroken = this.props.showBrokenBuildTimers && sick &&
+  
+    const timeSinceLastBuild = 
       <div className={styles.duration}>
         {' '}
         <Duration timestamp={this.props.lastBuildTime}
-                  fullDescriptionPrefix=' time broken '
-                  data-locator='time-broken'
+                  fullDescriptionPrefix=' time since last build'
+                  data-locator='time-since-last-build'
                   abbreviate/>
-      </div>
-
+      </div>  
+       
     const timeBuilding = this.props.showBuildTimers && building &&
       <div className={styles.duration}>
         {' '}
@@ -54,17 +55,19 @@ class InterestingProject extends Component {
       </Fragment>
 
     return (
-      <div className={classes} data-locator='interesting-project'>
-        <div className={styles.inner}>
-          {trayName}
-          <div className={styles.projectName} data-locator='project-name'>{this.props.name}</div>
-          {stage}
-          <VisuallyHidden data-locator='prognosis'> prognosis {this.props.prognosis}</VisuallyHidden>
-          {timeBroken}
-          {timeBuilding}
-          {buildLabel}
+      <a href={this.props.webUrl} target="_blank" >
+        <div className={classes} data-locator='interesting-project'>  
+          <div className={styles.inner}>
+            {trayName}
+            <div className={styles.projectName} data-locator='project-name'>{this.props.name}</div>
+            {stage}
+            <VisuallyHidden data-locator='prognosis'> prognosis {this.props.prognosis}</VisuallyHidden>
+            {timeSinceLastBuild}
+            {timeBuilding}
+            {buildLabel}
+          </div>
         </div>
-      </div>
+      </a>
     )
   }
 }
@@ -72,6 +75,7 @@ class InterestingProject extends Component {
 InterestingProject.propTypes = {
   prognosis: PropTypes.oneOf([
     PROGNOSIS_SICK,
+    PROGNOSIS_HEALTHY,
     PROGNOSIS_HEALTHY_BUILDING,
     PROGNOSIS_SICK_BUILDING,
     PROGNOSIS_UNKNOWN
@@ -79,6 +83,7 @@ InterestingProject.propTypes = {
   name: PropTypes.string.isRequired,
   stage: PropTypes.string,
   trayName: PropTypes.string,
+  webUrl: PropTypes.string,
   lastBuildTime: PropTypes.string,
   lastBuildLabel: PropTypes.string,
   thisBuildTime: PropTypes.string,

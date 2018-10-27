@@ -21,7 +21,7 @@ function wasBuildingPreviousFetch(existingProject) {
 
 function addThisBuildTime(project, currentProjects) {
   const existingProject = currentProjects.find((existing) => byProjectId(existing, project))
-
+ 
   if (isBuilding(project.prognosis)) {
     project.thisBuildTime = wasBuildingPreviousFetch(existingProject)
       ? existingProject.thisBuildTime

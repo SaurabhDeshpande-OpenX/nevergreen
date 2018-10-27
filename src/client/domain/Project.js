@@ -4,6 +4,7 @@ export const PROGNOSIS_SICK = 'sick'
 export const PROGNOSIS_HEALTHY_BUILDING = 'healthy-building'
 export const PROGNOSIS_SICK_BUILDING = 'sick-building'
 export const PROGNOSIS_UNKNOWN = 'unknown'
+export const PROGNOSIS_HEALTHY = 'healthy'
 
 export function formatBuildLabel(buildLabel, maxLength = 10) {
   if (isBlank(buildLabel)) {
@@ -17,6 +18,10 @@ export function formatBuildLabel(buildLabel, maxLength = 10) {
 
 export function isSick(prognosis) {
   return prognosis === PROGNOSIS_SICK
+}
+
+export function isHealthy(prognosis) {
+  return prognosis === PROGNOSIS_HEALTHY
 }
 
 export function isBuilding(prognosis) {
