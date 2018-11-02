@@ -12,8 +12,7 @@ pipeline {
           steps {
             sh 'sleep 2'
             whateverFunction()
-            functionParameters(2,
-              3)
+            
           }
         }
         stage('Stage2') {
@@ -21,6 +20,8 @@ pipeline {
           steps {
             sh 'sleep 3'
             sh 'env | sort'
+            functionParameters(2,
+              3)
           }
         }
         stage('Stage3') {
@@ -29,6 +30,7 @@ pipeline {
                expression{ oncePerDaybuildTriggered() }
           }
           steps {
+            
             sh 'sleep 3'
             sh 'env | sort'
           }
