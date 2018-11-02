@@ -12,6 +12,8 @@ pipeline {
           steps {
             sh 'sleep 2'
             whateverFunction()
+            functionParameters(2,
+              3)
           }
         }
         stage('Stage2') {
@@ -72,4 +74,8 @@ def oncePerDaybuildTriggered(){
     echo "trigger Failure"
     return false
   }
+}
+def functionParameters(number1, number2){
+  number1 = number1 + number2
+  println number1
 }
