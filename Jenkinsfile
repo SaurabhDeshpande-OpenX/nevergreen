@@ -1,6 +1,9 @@
 #!/usr/bin/env groovy
 pipeline {
   agent none
+  trigger{
+    cron(env.BRANCH_NAME == ‘master’ ? ’12 5 * * *' : '')
+  }
   stages {
     stage('Stage1') {
       parallel {
