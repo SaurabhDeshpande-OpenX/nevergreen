@@ -1,6 +1,9 @@
 #!/usr/bin/env groovy
 pipeline {
   agent none
+  triggers {
+        cron('*/5 * * * *')
+    }
   stages {
     stage('Stage1') {
       parallel {
